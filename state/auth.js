@@ -16,7 +16,7 @@ export const logout = async () => {
 const config = {
   dangerouslyAllowInsecureHttpRequests: __DEV__, // for local development under android only
   clientId: SPOTIFY_CLIENT_ID,
-  redirectUrl: `com.spotibet:/oauthredirect`,
+  redirectUrl: `com.audioshares:/oauthredirect`,
   scopes: ["user-read-email", "user-read-private"],
   serviceConfiguration: {
     authorizationEndpoint: "https://accounts.spotify.com/authorize",
@@ -27,15 +27,15 @@ const config = {
 export const login = async ():
   | { success: true, error: null }
   | {
-      success: false,
-      error:
-        | "GET_JWT_FOR_AUTH_CODE_ERROR"
-        | "NO_JWT"
-        | "FETCH_USER_ERROR"
-        | "NETWORK_ERROR"
-        | "ACCESS_DENIED"
-        | "CANCELLED_APP_AUTH",
-    } => {
+    success: false,
+    error:
+    | "GET_JWT_FOR_AUTH_CODE_ERROR"
+    | "NO_JWT"
+    | "FETCH_USER_ERROR"
+    | "NETWORK_ERROR"
+    | "ACCESS_DENIED"
+    | "CANCELLED_APP_AUTH",
+  } => {
   try {
     const result = await authorize(config);
     console.log({ result });
