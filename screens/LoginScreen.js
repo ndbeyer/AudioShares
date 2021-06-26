@@ -17,9 +17,9 @@ const StyledScreen = styled(Screen)`
 `;
 
 const loginErrorDescriptions = {
-  GET_JWT_FOR_AUTH_CODE_ERROR: "Unexpected Server error",
-  NO_JWT: "Unexpected Server Error",
-  FETCH_USER_ERROR: "Unexpected Server Error",
+  GET_JWT_FOR_AUTH_CODE_ERROR: "Unexpected Server error GET_JWT_FOR_AUTH_CODE_ERROR",
+  NO_JWT: "Unexpected Server Error NO_JWT",
+  FETCH_USER_ERROR: "Unexpected Server Error FETCH_USER_ERROR",
   NETWORK_ERROR: "Network error. You seem to be offline.",
   ACCESS_DENIED: "You canceled the spotify login process. Please try again.",
   CANCELLED_APP_AUTH:

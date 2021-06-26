@@ -24,6 +24,8 @@ const config = {
   },
 };
 
+
+
 export const login = async ():
   | { success: true, error: null }
   | {
@@ -38,7 +40,8 @@ export const login = async ():
   } => {
   try {
     const result = await authorize(config);
-    console.log({ result });
+    console.log('authorize config: ', config)
+    console.log('authorize result: ', result);
     const { error: getJwtForAuthCodeError } = result?.tokenAdditionalParameters;
     if (getJwtForAuthCodeError) {
       return { success: false, error: "GET_JWT_FOR_AUTH_CODE_ERROR" };
