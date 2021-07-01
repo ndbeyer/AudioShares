@@ -9,6 +9,7 @@
     "node": "16.3.0"
   },
   "scripts": {
+    "heroku:connect:api": "heroku git:remote -a audioshares-api",
     "deploy:api": "git subtree push --prefix api heroku master"
   }
 }
