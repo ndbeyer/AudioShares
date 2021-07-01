@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "nodemon index.js",
-    "heroku:connect": "heroku git:remote -a spotibet-api",
+    "heroku:connect": "heroku git:remote -a audioshares-api",
     "log": "heroku logs --tail",
     "login": "heroku login",
     "pg:start": "pg_ctl -D /usr/local/var/postgres start",
