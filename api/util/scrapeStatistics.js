@@ -18,7 +18,7 @@ const scrapeStatistics = async () => {
         // TODO: send error email
         const fetchDateEnd = new Date().toISOString();
         await db.query(
-          "INSERT INTO public.stat (artist_id, spotify_url, monthly_listeners, fetch_date_start, fetch_date_end) VALUES ($1, $2, $3, $4, $5)",
+          "INSERT INTO public.listeners (artist_id, spotify_url, monthly_listeners, fetch_date_start, fetch_date_end) VALUES ($1, $2, $3, $4, $5)",
           [
             artist_id,
             spotify_url,

@@ -64,9 +64,8 @@ const tables = {
           ON UPDATE NO ACTION
           ON DELETE NO ACTION
   )`,
-  // TODO: remove as it copies stat, stat should be renamed to monthly_listeners
-  stat: `
-  CREATE TABLE public.stat
+  listeners: `
+  CREATE TABLE public.listeners
   (
       id serial NOT NULL,
       artist_id text NOT NULL,

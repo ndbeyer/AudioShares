@@ -6,7 +6,7 @@ const getArtist = async (data) => {
     const day = date && date.substr(0, 10)
     const {
       rows
-    } = await db.query(`SELECT * FROM public.stat WHERE artist_id = $1 ${day ? `AND fetch_date_start::timestamp::date = $2` : ''} ORDER BY fetch_date_start DESC`, day ? [
+    } = await db.query(`SELECT * FROM public.listeners WHERE artist_id = $1 ${day ? `AND fetch_date_start::timestamp::date = $2` : ''} ORDER BY fetch_date_start DESC`, day ? [
       id, date
     ] : [id]);
 

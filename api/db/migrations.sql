@@ -8,7 +8,7 @@ CREATE TABLE public.user
     PRIMARY KEY (id)
 )
 
-CREATE TABLE public.stat
+CREATE TABLE public.listeners
 (
     id serial NOT NULL,
     artist_id text NOT NULL,
