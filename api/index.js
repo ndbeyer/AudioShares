@@ -2,7 +2,7 @@ const { ApolloServer, gql } = require("apollo-server-express");
 const express = require("express");
 const jwt = require("jsonwebtoken");
 
-const assignAuthRoutes = require("./util/auth");
+const addExpressRoutes = require("./util/expressRoutes");
 const Playlist = require("./classes/Playlist");
 const Artist = require("./classes/Artist");
 const Bet = require("./classes/Bet");
@@ -21,7 +21,7 @@ const { apiJwtSecret } = require("./config/keys");
 
 const app = express();
 
-assignAuthRoutes(app);
+addExpressRoutes(app);
 
 const typeDefs = gql`
   type Query {

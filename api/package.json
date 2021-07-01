@@ -18,7 +18,8 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "nodemon": "^1.19.4",
-    "pg": "8.6.0"
+    "pg": "8.6.0",
+    "node-fetch": "^2.6.0"
   },
   "scripts": {
     "start": "nodemon index.js",

@@ -3,6 +3,9 @@ const queryString = require("querystring");
 const bodyParser = require("body-parser");
 const { db } = require("../db");
 const jwt = require("jsonwebtoken");
+const log = require("./log");
+const scrapeStatistics = require("./scrapeStatistics");
+const authorize = require("./authorize");
 const {
   spotifyClientId,
   spotifyClientSecret,
@@ -124,6 +127,15 @@ const assignAuthRoutes = (app) => {
     } catch (e) {
       return response.json({ ...androidDebugObject, success: false, error: e });
     }
+  });
+
+  app.get("/check", log, authorize, async (req, res) => {
+    await scrapeStatistics();
+    res.send({ success: true })
+  });
+
+  app.get("/wakeup", log, async (req, res) => {
+    res.send({ success: true })
   });
 
   app.get("*", (_, res) =>

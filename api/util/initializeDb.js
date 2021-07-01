@@ -64,6 +64,7 @@ const tables = {
           ON UPDATE NO ACTION
           ON DELETE NO ACTION
   )`,
+  // TODO: remove as it copies stat, stat should be renamed to monthly_listeners
   monthly_listeners_history: `CREATE TABLE public.monthly_listeners_history
   (
     id serial NOT NULL,
@@ -74,6 +75,27 @@ const tables = {
     fetch_date_end timestamp NOT NULL,
     PRIMARY KEY (id)
   )`,
+  stat: `
+  CREATE TABLE public.stat
+  (
+      id serial NOT NULL,
+      artist_id text NOT NULL,
+      spotify_url text NOT NULL,
+      monthly_listeners int,
+      fetch_date_start timestamp NOT NULL,
+      fetch_date_end timestamp NOT NULL,
+      PRIMARY KEY (id)
+  )`,
+  artist: `
+  CREATE TABLE public.artist
+  (
+      id serial NOT NULL,
+      artist_id text NOT NULL UNIQUE,
+      artist_name text NOT NULL,
+      spotify_url text NOT NULL,
+      inserted timestamp NOT NULL,
+      PRIMARY KEY (id)
+  )`
 };
 
 const reportError = (error, table) => {
