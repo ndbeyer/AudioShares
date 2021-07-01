@@ -1,11 +1,11 @@
 const { ApolloError } = require("apollo-server-express");
-
 const { db } = require("../db");
-const axios = require("axios");
+
 const User = require("../classes/User");
 const Bet = require("../classes/Bet");
-const keys = require("../config/keys");
 const BetTimer = require("../util/BetTimer");
+
+const { addArtists } = require("../util/artistHelper")
 
 const createBet = async (
   { artistId, artistName, spotifyUrl, listeners, type, endDate },
@@ -27,23 +27,14 @@ const createBet = async (
     )
   ).rows[0].id;
   // SEND ARTIST TO STAT_SERVER
-  const { data } = await axios.post(
-    `${keys.statServerURI}/insert`,
-    {
-      inserts: [
-        {
-          artist_id: artistId,
-          spotify_url: spotifyUrl,
-          artist_name: artistName,
-        },
-      ],
-    },
-    {
-      headers: {
-        Authorization: keys.statServerSecret,
-      },
-    }
-  );
+
+  const artist = {
+    id: artistId,
+    name: artistName,
+    spotifyUrl
+  }
+  const data = await addArtists([artist])
+
   if (!data.success) {
     await db.query(`DELETE FROM public.bet WHERE id = $1`, [betId]);
     throw new ApolloError("STAT_SERVER_ERROR");

@@ -1,7 +1,6 @@
 const { db } = require("../db");
-const axios = require("axios");
-const keys = require("../config/keys");
 const lodash = require("lodash");
+const { getArtist } = require("../util/artistHelper")
 
 const getEndedBets = async (input) => {
   const ids = Array.isArray(input) ? input : [input];
@@ -13,9 +12,8 @@ const getEndedBets = async (input) => {
         end_date::text AS "endDate"
         FROM public.bet 
         WHERE transactions = false 
-        AND (now() at time zone 'utc') > end_date ${
-          input ? "AND id = ANY($1)" : ""
-        }`,
+        AND (now() at time zone 'utc') > end_date ${input ? "AND id = ANY($1)" : ""
+      }`,
       input ? [ids] : []
     )
   ).rows;
@@ -31,14 +29,7 @@ const makeEndedBetTransactions = async (input) => {
     // go through all artist-grouped bets, get stats for each artist
     for (const artistId in betsPerArtist) {
       // eslint-disable-next-line no-await-in-loop
-      const { data } = await axios.get(
-        `${keys.statServerURI}/artist?id=${artistId}`,
-        {
-          headers: {
-            Authorization: keys.statServerSecret,
-          },
-        }
-      );
+      const data = await getArtist({ id: artistId }) // TODO: replace with raw sql code
       const bets = betsPerArtist[artistId];
       // go through all bets of each artist and determine the listeners_at_end_date
       // eslint-disable-next-line no-await-in-loop

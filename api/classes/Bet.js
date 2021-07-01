@@ -1,7 +1,7 @@
-const axios = require("axios");
-const keys = require("../config/keys");
+
 const { encrypt, decrypt } = require("../util/encryptDecrypt");
 const { db } = require("../db");
+const { getArtist } = require("../util/artistHelper")
 
 // require other classes after exports to avoid circular dependencies
 
@@ -178,14 +178,9 @@ module.exports = class Bet {
     ).rows[0];
     if (!row.listenersAtStartDate) {
       // get the listeners from statServer
-      const { data } = await axios.get(
-        `${keys.statServerURI}/artist?id=${row.artistId}&date=${row.startDate}`,
-        {
-          headers: {
-            Authorization: keys.statServerSecret,
-          },
-        }
-      );
+
+      const data = await getArtist({ id: row.artistId, date: row.startDate }) // TODO: replace with raw sql code
+
       const listenersAtStartDate =
         data.payload[0] && data.payload[0].monthly_listeners;
       if (!listenersAtStartDate) {

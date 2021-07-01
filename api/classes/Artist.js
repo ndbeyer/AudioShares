@@ -1,44 +1,7 @@
 const getSpotifyData = require("../util/getSpotifyData");
 const { db } = require("../db");
 const getMonthlyListeners = require("../util/getMonthlyListeners");
-const syncArtistMonthlyListenersHistory = require("../mutations/syncArtistMonthlyListenersHistory");
-const fetch = require("node-fetch");
-
-const keys = require("../config/keys");
-// require other classes after exports to avoid circular dependencies
-// pseudochange: TODO: remove
-
-const addArtistsToStatServer = async (artists) => {
-  try {
-    const res = await fetch(`${keys.statServerURI}/insert`, {
-      method: "post",
-      body: JSON.stringify({
-        inserts: artists.map((artist) => ({
-          artist_id: artist.id,
-          spotify_url: artist.spotifyUrl,
-          artist_name: artist.name,
-        })),
-      }),
-      headers: {
-        Authorization: keys.statServerSecret,
-        "Content-Type": "application/json",
-      },
-    });
-    if (res.status !== 200) {
-      console.log("...addArtistsToStatServer: res.status !== 200");
-      console.log("res", res);
-      return;
-    }
-    const { success, error } = await res.json();
-    if (!success) {
-      console.log("...addArtistsToStatServer: success = false");
-      return;
-    }
-  } catch (e) {
-    console.log("...addArtistsToStatServer: catch error", e);
-  }
-};
-
+const { addArtists } = require("../util/artistHelper")
 module.exports = class Artist {
   constructor(data) {
     Object.assign(this, data);
@@ -59,7 +22,7 @@ module.exports = class Artist {
         })
     )[0];
 
-    addArtistsToStatServer([artist]);
+    addArtists([artist]);
     return artist;
   }
 
@@ -78,7 +41,7 @@ module.exports = class Artist {
         })
     );
 
-    addArtistsToStatServer(artists);
+    addArtists(artists);
     return artists;
   }
 
@@ -97,7 +60,6 @@ module.exports = class Artist {
   }
 
   async monthlyListenersHistory() {
-    await syncArtistMonthlyListenersHistory({ artistId: this.id });
     const rows = (
       await db.query(
         `SELECT * FROM 

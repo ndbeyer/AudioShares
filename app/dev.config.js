@@ -1,3 +1,3 @@
 module.exports = {
-    useProductionAPI: true
+    useProductionAPI: false
 }
