@@ -5,6 +5,9 @@
   "repository": "https://github.com/ndbeyer/AudioShares",
   "author": "Andreas Beyer <abeyer@posteo.de>",
   "license": "MIT",
+  "engines": {
+    "node": "16.3.0"
+  },
   "scripts": {
     "deploy:api": "git subtree push --prefix api heroku master"
   }

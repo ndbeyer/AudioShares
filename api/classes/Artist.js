@@ -6,7 +6,6 @@ const fetch = require("node-fetch");
 
 const keys = require("../config/keys");
 // require other classes after exports to avoid circular dependencies
-// pseudochange: TODO: remove
 
 const addArtistsToStatServer = async (artists) => {
   try {
