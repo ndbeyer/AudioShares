@@ -66,7 +66,7 @@ module.exports = class Artist {
           (SELECT 
             EXTRACT(DOW FROM fetch_date_end) AS dow,
             id, monthly_listeners AS "monthlyListeners", fetch_date_end::text AS "dateTime" 
-            FROM public.monthly_listeners_history 
+            FROM public.stat 
             WHERE artist_id = $1 
             ORDER BY fetch_date_end ASC
           ) AS sub
