@@ -5,7 +5,7 @@ import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import { useNavigation } from "@react-navigation/native";
-import styled from "styled-native-components";
+import styled from "styled-components";
 
 import ScrollViewScreen from "../components/ScrollViewScreen";
 import Loading from "../components/Loading";
