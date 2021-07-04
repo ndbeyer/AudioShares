@@ -2,10 +2,8 @@
 //@flow
 
 import React from "react";
-import styled, {
-  useWindowDimensions,
-  useTheme,
-} from "styled-native-components";
+import { useWindowDimensions } from "react-native";
+import styled from "styled-components";
 
 import Image from "../components/Image";
 import Gradient from "../components/Gradient";
@@ -28,7 +26,7 @@ const ArtistName = styled((props) =>
 const ImageWrapper = styled.View`
   height: ${(p) => p.height}px;
   width: ${(p) => p.width}px;
-  border-radius: ${(p) => p.borderRadius};
+  border-radius: ${(p) => p.borderRadius}px;
   overflow: hidden;
 `;
 
@@ -47,13 +45,16 @@ const ArtistImage = ({
   width,
   textSize = "l",
   textType = "heading",
-  borderRadius = "0rem",
+  borderRadius = 0,
 }) => {
-  const theme = useTheme();
+
+  console.log({ width })
   const { width: windowWidth } = useWindowDimensions();
 
-  width = width || windowWidth / theme.rem + "rem";
-  const height = Number(width.replace("rem", "")) * heightFactor + "rem";
+  width = width || windowWidth;
+  const height = width * heightFactor;
+
+  console.log({ width , height })
 
   return (
     <ImageWrapper width={width} height={height} borderRadius={borderRadius}>

@@ -2,7 +2,7 @@
 //@flow
 
 import React from "react";
-import styled from "styled-native-components";
+import styled from "styled-components";
 
 import { Label, Paragraph } from "../components/Text";
 import { getNumberWithSuffix } from "../util/suffix";
@@ -14,7 +14,7 @@ const Row = styled.View`
 const StatsWrapper = styled.View`
   align-self: stretch;
   max-width: 100%;
-  margin: 0.5rem 1rem 2rem;
+  margin: ${p => 0.5*p.theme.rem}px ${p => p.theme.rem}px ${p => 2*p.theme.rem}px;
 `;
 
 const ArtistStats = ({ monthlyListeners, followers, popularity }) => {

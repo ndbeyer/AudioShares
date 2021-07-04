@@ -6,6 +6,7 @@ import { TouchableOpacity } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import styled from "styled-native-components";
+import { useTheme } from 'styled-components'
 
 import ScrollViewScreen from "../components/ScrollViewScreen";
 import EmptyCard from "../components/EmptyCard";
@@ -18,7 +19,7 @@ import { BetInfoFragment } from "../state/bet";
 import { ArtistInfoFragment } from "../state/artist";
 
 const Image = styled(ArtistImage)`
-  border-radius: 1rem;
+  border-radius: ${p => p.theme.rem}px;
 `;
 
 const filterTypes = ["JOINABLE", "INVALID", "RUNNING", "ENDED"];
@@ -54,6 +55,9 @@ const ElevationWrapper = styled.View`
 `;
 
 const DashboardScreen = () => {
+
+  const theme = useTheme()
+
   const { data } = useQuery(
     gql`
       query dashboard {
@@ -107,7 +111,7 @@ const DashboardScreen = () => {
           return (
             <ElevationWrapper key={bet.id}>
               <CardWrapper>
-                <Image artist={bet.artist} width="18rem" textType="label" />
+                <Image artist={bet.artist} width={theme.rem * 18} textType="label" />
                 <BetStats
                   {...bet}
                   {...(selected === "JOINABLE"

@@ -2,7 +2,7 @@
 //@flow
 
 import React from "react";
-import styled, { useTheme } from "styled-native-components";
+import styled, { useTheme } from "styled-components";
 import Slider from "@react-native-community/slider";
 import { debounce } from "lodash";
 
@@ -12,7 +12,7 @@ import Button from "./Button";
 const Row = styled.View`
   flex-direction: row;
   justify-content: center;
-  padding: 1rem;
+  padding: ${p=>p.theme.rem}px;
 `;
 
 const Column = styled.View`
