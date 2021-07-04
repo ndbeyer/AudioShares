@@ -11,5 +11,26 @@
   "scripts": {
     "heroku:connect:api": "heroku git:remote -a audioshares-api",
     "deploy:api": "git subtree push --prefix api heroku master"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.157",
+    "@types/shortid": "^0.0.29",
+    "@typescript-eslint/eslint-plugin": "^3.6.1",
+    "@typescript-eslint/parser": "^3.6.1",
+    "eslint": "^7.11.0",
+    "eslint-import-resolver-babel-module": "^5.1.2",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^23.18.0",
+    "eslint-plugin-no-catch-all": "^1.0.1",
+    "eslint-plugin-prefer-arrow": "^1.2.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.8",
+    "eslint-plugin-react-native": "^3.8.1",
+    "eslint-plugin-react-perf": "^3.2.3",
+    "eslint-plugin-tsdoc": "^0.2.5",
+    "prettier": "^2.0.5",
+    "typescript": "^3.9.6",
+    "typescript-styled-plugin": "^0.15.0"
   }
 }

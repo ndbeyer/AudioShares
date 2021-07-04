@@ -1,0 +1,32 @@
+# OSX
+#
+.DS_Store
+
+# node.js
+#
+node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+.serverless
+.webpack
+
+# IDE stuff
+#
+completions.json
+.idea/
+*/**/.vscode
+*.code-workspace
+**/playgrounds/
+
+.env
+log.txt
+backend/showtimes-import/comscoreImportLogs.txt
+backend/showtimes-import/sharcImportLogs.txt
+backend/showtimes-import/indiekinolog.txt
+backend/showtimes-import/cp_log.txt
+backend/create-test-db/.password-cp-prod
+backend/create-test-db/.password-test-env-cinuru-analytics-user
+backend/showtimes-import/cp_prod_log.txt
+
+.bitrise.secrets.yml

@@ -7,7 +7,7 @@ const pool = new Pool(
       ssl: {
         rejectUnauthorized: false
       },
-    }
+    }    
     : {
       port: 5432,
       host: "localhost",

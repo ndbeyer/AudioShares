@@ -1,13 +1,30 @@
 {
-	"parser": "babel-eslint",
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"project": "./tsconfig.json",
+		"sourceType": "module"
+	},
 	"env": {
 		"browser": true,
 		"es6": true,
 		"jest/globals": true
 	},
-	"plugins": ["react", "react-perf", "react-hooks", "react-native", "jest", "promise"],
+	"plugins": [
+		"@typescript-eslint",
+		"react",
+		"react-perf",
+		"react-hooks",
+		"react-native",
+		"jest",
+		"promise",
+		"tsdoc",
+		"prefer-arrow",
+		"no-catch-all"
+	],
 	"extends": [
 		"eslint:recommended",
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended",
 		"plugin:react/recommended",
 		"plugin:react-perf/recommended",
 		"plugin:jest/recommended",
@@ -20,16 +37,14 @@
 		"__DEV__": true,
 		"element": true,
 		"device": true,
-		"by": true
+		"by": true,
+		"$": true
 	},
 	"settings": {
 		"import/resolver": {
 			"babel-module": {}
 		},
-		"react": {
-			"version": "detect",
-			"flowVersion": "0.78"
-		}
+		"react": { "version": "detect" }
 	},
 	"rules": {
 		"no-var": "warn",
@@ -42,7 +57,6 @@
 		"no-await-in-loop": "error",
 		"prefer-spread": "error",
 		"no-template-curly-in-string": "warn",
-		"valid-jsdoc": "warn",
 		"default-case": "warn",
 		"eqeqeq": ["warn", "smart"],
 		"no-alert": "error",
@@ -54,6 +68,15 @@
 		"wrap-iife": ["error", "inside"],
 		"no-shadow": "warn",
 		"no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
+		"tsdoc/syntax": "warn",
+		"@typescript-eslint/camelcase": "off",
+		"@typescript-eslint/no-non-null-assertion": "off",
+		"@typescript-eslint/explicit-function-return-type": "off",
+		"@typescript-eslint/ban-ts-comment": "off",
+		"@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_$" }],
+		"@typescript-eslint/explicit-module-boundary-types": "off",
+		"@typescript-eslint/no-empty-interface": "off",
+		"@typescript-eslint/no-inferrable-types": "off",
 		"react-native/no-unused-styles": "error",
 		"react-native/no-inline-styles": "error",
 		"react-native/no-color-literals": "error",
@@ -71,8 +94,22 @@
 		"react/display-name": "off",
 		"react-hooks/rules-of-hooks": "error",
 		"react-hooks/exhaustive-deps": ["warn", { "additionalHooks": "useMemoWhenNotFocused" }],
-		"promise/prefer-await-to-then": "off",
-		"promise/prefer-await-to-callbacks": "off",
-		"promise/catch-or-return": "off"
-	}
+		"promise/prefer-await-to-then": "error",
+		"promise/prefer-await-to-callbacks": "error",
+		"promise/catch-or-return": "off",
+		"prefer-arrow/prefer-arrow-functions": [
+			"warn",
+			{ "disallowPrototype": true, "singleReturnOnly": false, "classPropertiesAllowed": false }
+		],
+		"no-catch-all/no-catch-all": "warn"
+	},
+	"overrides": [
+		{
+			// enable the rule specifically for TypeScript files in frontend
+			"files": ["*.tsx"],
+			"rules": {
+				"@typescript-eslint/explicit-module-boundary-types": ["error"]
+			}
+		}
+	]
 }

@@ -1,0 +1,51 @@
+{
+	"compilerOptions": {
+		"allowJs": true,
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"jsx": "react",
+		"lib": ["esnext", "dom"],
+		"moduleResolution": "node",
+		"strict": true,
+		"noImplicitThis": false,
+		"noImplicitAny": false,
+		"sourceMap": true,
+		"noEmit": true,
+		"target": "es2018",
+		"plugins": [
+			{
+				"name": "typescript-styled-plugin",
+				"tags": ["styled", "styledWeb"],
+				"lint": {
+					"validProperties": ["elevation"],
+					"duplicateProperties": "warn",
+					"zeroUnits": "warning",
+					"float": "warning",
+					"important": "warning"
+				}
+			}
+		],
+		"baseUrl": ".",
+		"paths": {
+			"@cinuru/utils/*": ["utils/*"],
+			"@cinuru/components/*": ["components/*"],
+			"@react-native-community/async-storage": [
+				"app/node_modules/@react-native-community/async-storage"
+			],
+			"@react-native-community/blur": ["app/node_modules/@react-native-community/blur"],
+			"@react-native-community/datetimepicker": [
+				"app/node_modules/@react-native-community/datetimepicker"
+			],
+			"@react-native-community/picker": ["app/node_modules/@react-native-community/picker"],
+			"react-native-svg": ["app/node_modules/react-native-svg"],
+			"svgs": ["app/node_modules/svgs"],
+			"react-native-gesture-handler": ["app/node_modules/react-native-gesture-handler"],
+			"styled-native-components": ["app/node_modules/styled-native-components"],
+			"react": ["app/node_modules/@types/react"],
+			"react-native": ["app/node_modules/@types/react-native"],
+			"date-fns": ["app/node_modules/date-fns"]
+		}
+	}
+}
