@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Image from './Image';
 import Gradient from './Gradient';
 import { Heading, Label, Paragraph } from './Text';
+import { ArtistType } from 'app/state/artist';
 
 const ArtistName = styled((props) =>
 	props.textType === 'heading' ? (
@@ -40,20 +41,17 @@ const ArtistImage = ({
 	textType = 'heading',
 	borderRadius = 0,
 }: {
-	artist: any;
+	artist: ArtistType;
 	heightFactor: number;
 	width: number;
 	textSize: string;
 	textType: 'heading' | 'label' | 'paragraph';
 	borderRadius: number;
 }): React.Element => {
-	console.log({ width });
 	const { width: windowWidth } = useWindowDimensions();
 
 	width = width || windowWidth;
 	const height = width * heightFactor;
-
-	console.log({ width, height });
 
 	return (
 		<ImageWrapper width={width} height={height} borderRadius={borderRadius}>
@@ -61,7 +59,7 @@ const ArtistImage = ({
 				width="100%"
 				height="100%"
 				source={artist.image}
-				resizeMode={heightFactor ? 'cover' : null}
+				resizeMode={heightFactor ? 'cover' : undefined}
 			/>
 			<StyledGradient />
 			<ArtistName size={textSize} textType={textType} margin="1rem 1.5rem" color="$background0">
