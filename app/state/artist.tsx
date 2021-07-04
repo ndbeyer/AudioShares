@@ -24,13 +24,13 @@ export const ArtistInfoFragment = gql`
 	}
 `;
 
-export type ArtistOfPlaylist = {
+export type ArtistOfPlayListType = {
 	id: string;
 	name: string;
 	image: string;
 }[];
 
-export const useArtistsOfPlaylist = (id: string): ArtistOfPlaylist | undefined | null => {
+export const useArtistsOfPlaylist = (id: string): ArtistOfPlayListType | undefined | null => {
 	const { data } = useQuery(
 		gql`
 			query artistsOfPlaylist($playlistId: ID!) {
@@ -67,7 +67,7 @@ export type ArtistType = {
 	}[];
 };
 
-export const useArtist = (id: string): Artist | undefined | null => {
+export const useArtist = (id: string): ArtistType | undefined | null => {
 	const { data } = useQuery(
 		gql`
 			query artist($id: ID!) {

@@ -8,7 +8,7 @@ import styled from "styled-native-components";
 import ScrollViewScreen from "../components/ScrollViewScreen";
 import Button from "../components/Button";
 import Loading from "../components/Loading";
-import ArtistStats from "../components/ArtistStats";
+import ArtistStatsRow from "../components/ArtistStatsRow";
 import ArtistImage from "../components/ArtistImage";
 import Graph from "../components/Graph";
 import CreateBet from "../components/CreateBet";
@@ -64,7 +64,7 @@ const ArtistScreen = ({ route }) => {
   ) : (
     <ScrollViewScreen>
       <ArtistImage artist={artist} />
-      <ArtistStats
+      <ArtistStatsRow
         monthlyListeners={artist.monthlyListeners}
         followers={artist.followers}
         popularity={artist.popularity}

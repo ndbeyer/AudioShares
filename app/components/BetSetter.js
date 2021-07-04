@@ -37,7 +37,7 @@ const BetSetter = () => {
   return (
     <Row>
       {[">", "+", "20%", "1113 Listeners"].map((string) => (
-        <Item string={string} />
+        <Item key={string} string={string} />
       ))}
     </Row>
   );
