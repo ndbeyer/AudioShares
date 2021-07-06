@@ -1,9 +1,6 @@
-//@format
-//@flow
-
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
-import styled from "styled-native-components";
+import styled, { useTheme } from "styled-components";
 import { formatDistanceToNow, format } from "date-fns";
 
 import { Paragraph } from "./Text";
@@ -16,34 +13,33 @@ const Wrapper = styled.View`
   justify-content: center;
   align-items: flex-end;
   align-self: center;
-  padding: ${(p) => (p.topPadding ? "3.5rem" : "0.5rem")} 0rem 0.5rem;
-  margin: 0 1rem;
+  padding: ${(p) => (p.topPadding ? 3.5*p.theme.rem : 0.5*p.theme.rem)}px 0px ${p => 0.5 * p.theme.rem}px;
+  margin: 0px ${p => p.theme.rem}px;
   flex: 1;
 `;
 
 const Bar = styled((props) =>
   props.onPress ? <TouchableOpacity {...props} /> : <View {...props} />
 )`
-  background-color: $neutral4;
-  height: ${(p) => p.height};
-  width: ${(p) => p.width};
+  background-color: ${p => p.theme.colors.neutral4};
+  height: ${(p) => p.height}px;
+  width: ${(p) => p.width}px;
 `;
 
 const TextPositioner = styled.View`
   position: absolute;
   left: 0;
-  top: ${(p) => p.top || "0"};
+  top: ${(p) => p.top || 0}px;
   width: 100%;
   flex-direction: row;
   justify-content: center;
-  /* border: 1px solid green; */
 `;
 
 const Line = styled.View`
   height: 1px;
-  background-color: $neutral4;
+  background-color: ${p => p.theme.colors.neutral4};
   align-self: stretch;
-  margin: ${(p) => p.margin || "0"};
+  margin: ${(p) => p.theme.rem2px(p.mar)};
 `;
 
 const Column = styled.View`
@@ -58,18 +54,16 @@ const StyledGradient = styled(Gradient).attrs((p) => ({
 }))``;
 
 const QuoteWrapper = styled.View`
-  width: ${(p) => p.width};
-  height: ${(p) => p.height};
+  width: ${(p) => p.theme.rem2px(p.width)};
+  height:${(p) => p.theme.rem2px(p.height)};
   justify-content: space-between;
   align-items: center;
-  /* border: 1px solid red; */
 `;
 
 const BarContent = styled.View`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* border: 1px solid blue; */
 `;
 
 const BarSection = styled.View`
@@ -86,21 +80,24 @@ const LeftBar = ({
   supportersWin,
   highlight,
 }) => {
+
+  const theme = useTheme()
+
   return (
     <Bar
       height={
         barRightValue > barLeftValue
-          ? nBarHeightMax / 2 + "rem"
-          : nBarHeightMax + "rem"
+          ? nBarHeightMax / 2 * theme.rem
+          : nBarHeightMax * theme.rem
       }
-      width={nBarWidth + "rem"}
+      width={nBarWidth * theme.rem}
     >
       <StyledGradient
         highLightColor={
           highlight ? (supportersWin ? "accent0" : "error") : null
         }
       />
-      <TextPositioner top="-3rem">
+      <TextPositioner top={-3 * theme.rem}>
         <Paragraph>{getNumberWithSuffix(barLeftValue)}</Paragraph>
       </TextPositioner>
     </Bar>
@@ -121,6 +118,8 @@ const RightBar = ({
     setIndex((b) => (b < 2 ? b + 1 : 0));
   }, []);
 
+  const theme = useTheme()
+
   return (
     <Column>
       {type === "HIGHER" ? <Paragraph align="center">↑</Paragraph> : null}
@@ -129,14 +128,14 @@ const RightBar = ({
         height={
           barLeftValue && barRightValue
             ? barRightValue > barLeftValue
-              ? nBarHeightMax + "rem"
-              : nBarHeightMax / 2 + "rem"
-            : nBarHeightMax / 2 + "rem"
+              ? nBarHeightMax * theme.rem
+              : nBarHeightMax / 2 * theme.rem
+            : nBarHeightMax / 2 * theme.rem
         }
-        width={nBarWidth + "rem"}
+        width={nBarWidth * theme.rem}
       >
         <StyledGradient />
-        <TextPositioner top={type === "LOWER" ? "-3rem" : "0"}>
+        <TextPositioner top={type === "LOWER" ? -3*theme.rem : 0}>
           {viewTypes[index] === "absolute" ? (
             <Paragraph margin="0">
               {getNumberWithSuffix(barRightValue)}
@@ -177,6 +176,9 @@ const Quote = ({
   highlight,
   userWins,
 }) => {
+
+  const  theme = useTheme()
+
   return (
     <QuoteWrapper
       width={nBarWidth + "rem"}
@@ -186,7 +188,7 @@ const Quote = ({
           : nBarHeightMax / 2 + "rem"
       }
     >
-      <TextPositioner top="-2rem">
+      <TextPositioner top={-2*theme.rem}>
         <Paragraph size="s" color="$neutral3">
           {type === "HIGHER"
             ? getNumberWithSuffix(supportersAmount)
@@ -202,7 +204,7 @@ const Quote = ({
             : null}
         </Paragraph>
       </TextPositioner>
-      <Line margin="0 1rem" />
+      <Line mar="0rem 1rem" />
       <TextPositioner>
         <Paragraph size="s" color="$neutral3">
           {type === "LOWER"
@@ -243,7 +245,7 @@ const Row = styled.View`
 const XAxis = ({ dateLeft, dateRight }) => {
   return (
     <>
-      <Line margin="0" />
+      <Line mar="0rem" />
       {dateLeft === "now" && dateRight ? (
         <Paragraph margin="0rem 0 0.5rem" size="s" color="$neutral3">
           {formatDistanceToNow(new Date(dateRight))}
