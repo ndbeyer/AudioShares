@@ -22,7 +22,7 @@ const Column = styled.View`
 
 const Slide = styled(Slider)`
 	flex: 1;
-	height: 5rem;
+	height: ${(p) => p.theme.rem2px('5rem')};
 `;
 
 const AmountSlider = ({
