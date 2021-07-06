@@ -31,6 +31,7 @@ const theme = {
     elevation: value,
     zIndex: value,
   }),
+  rem2px: (string) => string.split(" ").map(str => Number(str.replace('rem', ''))).reduce((a,b) => `${a} ${b*UNIT}px`,'')
 };
 
 const ThemeProvider = ({ children }) => {
