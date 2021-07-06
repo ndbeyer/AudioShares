@@ -27,7 +27,6 @@ const Slide = styled(Slider)`
 `;
 
 const ListenersSlider = ({
-  type,
   initialValue = 1,
   step = 1,
   minSliderVal = -100,
@@ -61,7 +60,7 @@ const ListenersSlider = ({
         monthlyListeners + (sliderVal / 100) * monthlyListeners
       ),
     });
-  }, [monthlyListeners, sliderVal, onChange, type]);
+  }, [monthlyListeners, sliderVal, onChange]);
 
   return (
     <>

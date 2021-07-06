@@ -158,7 +158,7 @@ export const createBet = async ({
   endDate: string,
   spotifyUrl: string,
 }): Promise<
-  | { success: true, error: null }
+  | { success: true, error: null, id: string }
   | {
       success: false,
       error:
@@ -166,6 +166,7 @@ export const createBet = async ({
         | "INVALID_BET_TIMING"
         | "STAT_SERVER_ERROR"
         | "DB_ERROR",
+      id: undefined
     }
 > => {
   try {

@@ -249,12 +249,12 @@ const BetStats = ({
 	dateLeft: 'now' | string;
 	dateRight: string;
 	type: 'HIGHER' | 'LOWER';
-	supportersAmount: number;
-	contradictorsAmount: number;
+	supportersAmount?: number;
+	contradictorsAmount?: number;
 	nBarHeightMax?: number;
 	nBarWidth?: number;
-	currentUserSupports: boolean;
-	currentUserAmount: number;
+	currentUserSupports?: boolean;
+	currentUserAmount?: number;
 	hideQuote?: boolean;
 	highlight?: boolean;
 }): React.Element => {
