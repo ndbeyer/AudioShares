@@ -59,7 +59,22 @@ export type ArtistType = {
 	followers: number;
 	monthlyListeners: number;
 	spotifyUrl: string;
-	joinableBets: string[];
+	joinableBets: {
+		id: string;
+		artistId: string;
+		listeners: number;
+		type: 'HIGHER' | 'LOWER';
+		startDate: string;
+		endDate: string;
+		quote?: number;
+		supportersAmount?: number;
+		contradictorsAmount?: number;
+		currentUserAmount?: number;
+		currentUserSupports?: boolean;
+		status: string;
+		listenersAtStartDate: number;
+		listenersAtEndDate?: number;
+	}[];
 	monthlyListenersHistory: {
 		id: string;
 		monthlyListeners: number;

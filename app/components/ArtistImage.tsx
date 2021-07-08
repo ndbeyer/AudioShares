@@ -42,11 +42,11 @@ const ArtistImage = ({
 	borderRadius = 0,
 }: {
 	artist: ArtistType;
-	heightFactor: number;
-	width: number;
-	textSize: string;
-	textType: 'heading' | 'label' | 'paragraph';
-	borderRadius: number;
+	heightFactor?: number;
+	width?: number;
+	textSize?: string;
+	textType?: 'heading' | 'label' | 'paragraph';
+	borderRadius?: number;
 }): React.Element => {
 	const { width: windowWidth } = useWindowDimensions();
 

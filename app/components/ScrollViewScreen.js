@@ -29,8 +29,8 @@ const ScrollView = ({
 }: {
   renderHeaderContent?: () => ReactNode,
   children?: ReactNode | ReactNode[],
-  loading: boolean,
-  style: any,
+  loading?: boolean,
+  style?: any,
 }) => {
   return (
     <>
