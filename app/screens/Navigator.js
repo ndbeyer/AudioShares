@@ -115,7 +115,7 @@ const LoggedInNavigator = () => {
             <Icon
               size="3rem"
               name={routeIcons[route.name]}
-              color={focused ? theme.colors.neutral0 : theme.colors.neutral4}
+              color={focused ? 'neutral0' : 'neutral4'}
             />
           ),
         })}
