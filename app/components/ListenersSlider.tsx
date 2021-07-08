@@ -12,7 +12,8 @@ import Button from './Button';
 const Row = styled.View`
 	flex-direction: row;
 	justify-content: center;
-	padding: ${(p) => p.theme.rem}px;
+	align-items: center;
+	padding: ${(p) => p.theme.rem2px('1rem')};
 `;
 
 const Column = styled.View`
@@ -25,13 +26,13 @@ const Slide = styled(Slider)`
 	height: ${(p) => p.theme.rem2px('5rem')};
 `;
 
-const AmountSlider = ({
-	initialValue = 0,
+const ListenersSlider = ({
+	initialValue = 1,
 	step = 1,
-	minSliderVal = 0,
-	maxSliderVal = 100,
+	minSliderVal = -100,
+	maxSliderVal = 200,
 	delay = 500,
-	money = 0,
+	monthlyListeners,
 	onChange,
 }: {
 	initialValue?: number;
@@ -39,8 +40,8 @@ const AmountSlider = ({
 	minSliderVal?: number;
 	maxSliderVal?: number;
 	delay?: number;
-	money: number;
-	onChange: (object: { [key: string]: unknown }) => void;
+	monthlyListeners?: number;
+	onChange: (arg: { monthlyListeners: number }) => void;
 }): React.Element => {
 	const theme = useTheme();
 	const [sliderVal, setSliderVal] = React.useState(initialValue);
@@ -52,10 +53,6 @@ const AmountSlider = ({
 		delay
 	);
 
-	React.useEffect(() => {
-		onChange({ amount: sliderVal });
-	}, [sliderVal, onChange]);
-
 	const handleIncrement = React.useCallback(() => {
 		setSliderVal((b) => Math.min(b + 1, maxSliderVal));
 	}, [maxSliderVal]);
@@ -63,6 +60,13 @@ const AmountSlider = ({
 	const handleDecrement = React.useCallback(() => {
 		setSliderVal((b) => Math.max(b - 1, minSliderVal));
 	}, [minSliderVal]);
+
+	React.useEffect(() => {
+		if (!monthlyListeners) return;
+		onChange({
+			monthlyListeners: Math.floor(monthlyListeners + (sliderVal / 100) * monthlyListeners),
+		});
+	}, [monthlyListeners, sliderVal, onChange]);
 
 	return (
 		<>
@@ -95,13 +99,23 @@ const AmountSlider = ({
 			</Row>
 			<Row>
 				<Column>
-					<Paragraph>
-						{sliderVal} Money ({money} available)
-					</Paragraph>
+					{Number.isNaN(monthlyListeners) ? (
+						<Paragraph color="$neutral3" margin="0" size="s">
+							No monthly listeners
+						</Paragraph>
+					) : (
+						<Paragraph color="$neutral3" margin="0" size="s">
+							{sliderVal === 0 ? '= ' : sliderVal > 0 ? '> ' : '< '}
+							{Math.floor(
+								(monthlyListeners as number) + (sliderVal / 100) * (monthlyListeners as number)
+							)}{' '}
+							Monthly Listeners
+						</Paragraph>
+					)}
 				</Column>
 			</Row>
 		</>
 	);
 };
 
-export default AmountSlider;
+export default ListenersSlider;
