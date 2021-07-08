@@ -51,7 +51,7 @@ const ArtistImage = ({
 	const { width: windowWidth } = useWindowDimensions();
 
 	width = width || windowWidth;
-	const height = width * heightFactor;
+	const height = (width as number) * heightFactor;
 
 	return (
 		<ImageWrapper width={width} height={height} borderRadius={borderRadius}>

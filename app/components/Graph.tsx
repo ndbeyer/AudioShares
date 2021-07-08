@@ -28,8 +28,8 @@ const Graph = ({
 	pxHeight = 220,
 }: {
 	data: { id: string; dateTime: string; monthlyListeners: number }[];
-	margin: string;
-	pxHeight: number;
+	margin?: string;
+	pxHeight?: number;
 }): React.Element => {
 	const theme = useTheme();
 	const { width: pxWidth } = useWindowDimensions();
