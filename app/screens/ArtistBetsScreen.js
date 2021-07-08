@@ -6,7 +6,7 @@ import CardWrapper from "../components/CardWrapper";
 import Loading from "../components/Loading";
 import BetStats from "../components/BetStats";
 import ArtistImage from "../components/ArtistImage";
-import JoinBet from "../components/JoinBet";
+import JoinBetView from "../components/JoinBetView";
 
 import { useArtist } from "../state/artist";
 import { usePortal } from "../components/PortalProvider";
@@ -25,7 +25,7 @@ const ArtistBetsScreen = ({ route }) => {
   const handleOpenBet = React.useCallback(
     (betId) => {
       renderPortal(
-        <JoinBet
+        <JoinBetView
           betId={betId}
           closePortal={closePortal}
           renderPortal={renderPortal}

@@ -34,11 +34,11 @@ const AmountSlider = ({
 	money = 0,
 	onChange,
 }: {
-	initialValue: number;
-	step: number;
-	minSliderVal: number;
-	maxSliderVal: number;
-	delay: number;
+	initialValue?: number;
+	step?: number;
+	minSliderVal?: number;
+	maxSliderVal?: number;
+	delay?: number;
 	money: number;
 	onChange: (object: { [key: string]: unknown }) => void;
 }): React.Element => {

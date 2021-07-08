@@ -12,7 +12,7 @@ import ArtistStatsRow from "../components/ArtistStatsRow";
 import ArtistImage from "../components/ArtistImage";
 import Graph from "../components/Graph";
 import CreateBetView from "../components/CreateBetView";
-import JoinBet from "../components/JoinBet";
+import JoinBetView from "../components/JoinBetView";
 
 import { useArtist } from "../state/artist";
 import { usePortal } from "../components/PortalProvider";
@@ -33,7 +33,7 @@ const ArtistScreen = ({ route }) => {
   const handleJoinBet = React.useCallback(
     (betId) => {
       renderPortal(
-        <JoinBet
+        <JoinBetView
           betId={betId}
           closePortal={closePortal}
           renderPortal={renderPortal}
