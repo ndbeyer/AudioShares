@@ -16,7 +16,7 @@ const PotentiallyTouchable = styled((props) =>
 
 const CardWrapper = (props): React.Element => {
 	const theme = useTheme();
-	const shadowProps = React.useMemo(() => theme.elevation(1), []);
+	const shadowProps = React.useMemo(() => theme.elevation(1), [theme]);
 	return <PotentiallyTouchable {...props} style={shadowProps} />;
 };
 
