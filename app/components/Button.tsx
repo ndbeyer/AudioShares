@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-native-components';
+import styled from 'styled-components';
 import { ActivityIndicator } from 'react-native';
 
 import { Label } from './Text';
@@ -13,15 +13,15 @@ const LoadingWrapper = styled.View`
 `;
 
 const Wrapper = styled.TouchableOpacity`
-	background-color: ${(p) => p.backgroundColor};
+	background-color: ${(p) => p.theme.colors[p.backgroundColor.replace('$', '')]};
 	border-width: ${(p) => (p.outline ? 1 : 0)}px;
 	border-style: solid;
-	border-color: $neutral4;
+	border-color: ${(p) => p.theme.colors.neutral4};
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
-	border-radius: 1rem;
-	margin: ${(p) => p.margin};
+	border-radius: ${(p) => p.theme.rem2px('1rem')};
+	margin: ${(p) => p.theme.rem2px(p.mar)};
 `;
 
 const Button = ({
@@ -59,7 +59,7 @@ const Button = ({
 			disabled={disabled}
 			outline={outline}
 			backgroundColor={backgroundColor}
-			margin={margin}
+			mar={margin}
 		>
 			<>
 				{loading ? (
