@@ -25,6 +25,7 @@ const Wrapper = styled.TouchableOpacity`
 `;
 
 const Button = ({
+	key,
 	id,
 	onPress,
 	label = 'I have no label',
@@ -37,6 +38,7 @@ const Button = ({
 	light = true,
 	margin = '1rem',
 }: {
+	key?: string;
 	id?: string;
 	onPress: (id?: string) => void;
 	label: string;
