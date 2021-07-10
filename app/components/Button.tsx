@@ -25,7 +25,6 @@ const Wrapper = styled.TouchableOpacity`
 `;
 
 const Button = ({
-	key,
 	id,
 	onPress,
 	label = 'I have no label',
