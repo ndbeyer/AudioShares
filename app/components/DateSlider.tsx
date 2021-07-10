@@ -72,12 +72,12 @@ const DateSlider = ({
 		<>
 			<Row>
 				<Button
-					backgroundColor="$background0"
+					backgroundColor="background0"
 					label="-"
 					onPress={handleDecrement}
 					outline
 					margin="0 0.5rem 0 0"
-					textColor="$neutral3"
+					textColor="neutral3"
 				/>
 				<Slide
 					minimumValue={minSliderVal}
@@ -89,18 +89,18 @@ const DateSlider = ({
 					maximumTrackTintColor={theme.colors.neutral5}
 				/>
 				<Button
-					backgroundColor="$background0"
+					backgroundColor="background0"
 					label="+"
 					onPress={handleIncrement}
 					outline
 					margin="0 0 0 0.5rem"
-					textColor="$neutral3"
+					textColor="neutral3"
 				/>
 			</Row>
 
 			<Row>
 				<Column>
-					<Paragraph color="$neutral3" margin="0" size="s">
+					<Paragraph color="neutral3" margin="0" size="s">
 						{format(new Date(betTimer.ends()), 'yyyy-MM-dd')}
 					</Paragraph>
 				</Column>

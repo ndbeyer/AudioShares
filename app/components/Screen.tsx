@@ -8,7 +8,7 @@ import Loading from './Loading';
 const Background = styled.View`
 	width: 100%;
 	height: ${(p) => p.height}px;
-	background-color: ${(p) => p.theme.colors.neutral1};
+	background-color: ${(p) => p.theme.colors.background0};
 	position: absolute;
 `;
 

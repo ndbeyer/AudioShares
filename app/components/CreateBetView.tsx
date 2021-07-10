@@ -111,7 +111,7 @@ const CreateBetView = ({
 			<DateSlider initialValue={0} onChange={handleChange} />
 
 			<Row>
-				<Button onPress={closePortal} label="Cancel" backgroundColor="$background0" />
+				<Button onPress={closePortal} label="Cancel" backgroundColor="background0" />
 				<Button
 					loading={loading}
 					onPress={handleSubmit}

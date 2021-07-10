@@ -37,7 +37,7 @@ const ArtistStatsRow = ({
 		<StatsWrapper>
 			<Row>
 				{labels.map((label) => (
-					<Label light margin="1rem 1rem 0rem" flex color="$neutral3" key={label}>
+					<Label light margin="1rem 1rem 0rem" flex color="neutral3" key={label}>
 						{label}
 					</Label>
 				))}

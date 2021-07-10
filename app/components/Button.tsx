@@ -31,9 +31,9 @@ const Button = ({
 	outline,
 	loading,
 	disabled,
-	textColor = '$neutral0',
-	textColorDisabled = '$neutral2',
-	backgroundColor = '$background1',
+	textColor = 'neutral0',
+	textColorDisabled = 'neutral2',
+	backgroundColor = 'background1',
 	light = true,
 	margin = '1rem',
 }: {

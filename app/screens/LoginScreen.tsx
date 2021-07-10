@@ -80,7 +80,7 @@ const LoginScreen = (): React.Element => {
 					<Button onPress={handleLogin} label="Ok" />
 					<Button
 						margin="0"
-						backgroundColor="$background0"
+						backgroundColor="background0"
 						onPress={handleClickFalse}
 						label="Cancel"
 					/>

@@ -88,8 +88,8 @@ const PortalProvider = ({ children }: { children: React.ReactNode }): React.Elem
 														onPress={onPress}
 														backgroundColor={
 															content.buttons.length > 1 && index === 0
-																? '$background1'
-																: '$background0'
+																? 'background1'
+																: 'background0'
 														}
 														disabled={disabled}
 														loading={loading}
@@ -100,7 +100,7 @@ const PortalProvider = ({ children }: { children: React.ReactNode }): React.Elem
 														key={`DialogButton${index}`}
 														label="OK"
 														onPress={handleClosePortal}
-														backgroundColor="$background0"
+														backgroundColor="background0"
 													/>
 												)}
 											</Row>

@@ -60,7 +60,7 @@ const Graph = ({
 
 	return !interpolatedData ? (
 		<Wrapper mar={margin}>
-			<Paragraph color="$neutral3">No history data available</Paragraph>
+			<Paragraph color="neutral3">No history data available</Paragraph>
 		</Wrapper>
 	) : (
 		<>

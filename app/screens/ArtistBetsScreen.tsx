@@ -51,7 +51,7 @@ const ArtistBetsScreen = ({
 					/>
 					<Button
 						label="Join"
-						backgroundColor="$background0"
+						backgroundColor="background0"
 						outline
 						onPress={handleOpenBet}
 						id={bet.id}

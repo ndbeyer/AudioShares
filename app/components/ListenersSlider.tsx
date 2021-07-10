@@ -72,12 +72,12 @@ const ListenersSlider = ({
 		<>
 			<Row>
 				<Button
-					backgroundColor="$background0"
+					backgroundColor="background0"
 					label="-"
 					onPress={handleDecrement}
 					outline
 					margin="0 0.5rem 0 0"
-					textColor="$neutral3"
+					textColor="neutral3"
 				/>
 				<Slide
 					minimumValue={minSliderVal}
@@ -89,22 +89,22 @@ const ListenersSlider = ({
 					maximumTrackTintColor={theme.colors.neutral5}
 				/>
 				<Button
-					backgroundColor="$background0"
+					backgroundColor="background0"
 					label="+"
 					onPress={handleIncrement}
 					outline
 					margin="0 0 0 0.5rem"
-					textColor="$neutral3"
+					textColor="neutral3"
 				/>
 			</Row>
 			<Row>
 				<Column>
 					{Number.isNaN(monthlyListeners) ? (
-						<Paragraph color="$neutral3" margin="0" size="s">
+						<Paragraph color="neutral3" margin="0" size="s">
 							No monthly listeners
 						</Paragraph>
 					) : (
-						<Paragraph color="$neutral3" margin="0" size="s">
+						<Paragraph color="neutral3" margin="0" size="s">
 							{sliderVal === 0 ? '= ' : sliderVal > 0 ? '> ' : '< '}
 							{Math.floor(
 								(monthlyListeners as number) + (sliderVal / 100) * (monthlyListeners as number)
