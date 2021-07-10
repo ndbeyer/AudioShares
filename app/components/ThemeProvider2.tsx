@@ -2,19 +2,6 @@ import React from 'react';
 import { ThemeProvider as SNThemeProvider } from 'styled-components';
 import { times } from 'lodash';
 import { UNIT, colorDefs, typoDefs, pathDefs } from '../util/theme';
-
-export const createVariables = ({ baseBorderRadius = 0.25 } = {}) => {
-	return {
-		...Object.assign(
-			...times(5, (i) => ({
-				[`borderRadius${i}`]: baseBorderRadius * Math.pow(2, i) + 'rem',
-			}))
-		),
-		...typoDefs(),
-	};
-};
-
-// PortalProvider requires styled-native-components, so it is imported after calling setStaticVariables(..)
 import PortalProvider from './PortalProvider';
 
 const theme = {
@@ -29,13 +16,16 @@ const theme = {
 		elevation: value,
 		zIndex: value,
 	}),
+	typo: { ...typoDefs() },
 	rem2px: (string) =>
-		string.includes('%')
-			? string
-			: string
-					.split(' ')
-					.map((str) => Number(str.replace('rem', '')))
-					.reduce((a, b) => `${a} ${b * UNIT}px`, ''),
+		string
+			? string.includes('%')
+				? string
+				: string
+						.split(' ')
+						.map((str) => Number(str.replace('rem', '')))
+						.reduce((a, b) => `${a} ${b * UNIT}px`, '')
+			: '0',
 	rem24sidesPx: (string: string, type: 'pxString' | 'pxArray' = 'pxString') => {
 		const array = [];
 		string.split(' ').forEach((str) => array.push(Number(str.replace('rem', ''))));
@@ -54,6 +44,8 @@ const theme = {
 			: array.map((n) => n * UNIT);
 	},
 };
+
+console.log('theme', theme);
 
 const ThemeProvider = ({ children }) => {
 	return (
