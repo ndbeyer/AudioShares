@@ -30,10 +30,12 @@ const theme = {
 		zIndex: value,
 	}),
 	rem2px: (string) =>
-		string
-			.split(' ')
-			.map((str) => Number(str.replace('rem', '')))
-			.reduce((a, b) => `${a} ${b * UNIT}px`, ''),
+		string.includes('%')
+			? string
+			: string
+					.split(' ')
+					.map((str) => Number(str.replace('rem', '')))
+					.reduce((a, b) => `${a} ${b * UNIT}px`, ''),
 	rem24sidesPx: (string: string, type: 'pxString' | 'pxArray' = 'pxString') => {
 		const array = [];
 		string.split(' ').forEach((str) => array.push(Number(str.replace('rem', ''))));

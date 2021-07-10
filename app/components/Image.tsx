@@ -1,16 +1,16 @@
 import React from 'react';
-import styled from 'styled-native-components';
+import styled from 'styled-components';
 
 const Img = styled.Image.attrs((p) => ({
 	resizeMode: p.resizeMode,
 }))`
-	width: ${(p) => p.width};
-	height: ${(p) => p.height};
+	width: ${(p) => p.theme.rem2px(p.width)};
+	height: ${(p) => p.theme.rem2px(p.height)};
 `;
 
 const EmptyWrapper = styled.View`
-	width: ${(p) => p.width};
-	height: ${(p) => p.height};
+	width: ${(p) => p.theme.rem2px(p.width)};
+	height: ${(p) => p.theme.rem2px(p.height)};
 `;
 
 const Image = ({
