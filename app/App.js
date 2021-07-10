@@ -7,7 +7,6 @@ import { ApolloProvider } from "@apollo/react-hooks";
 
 import Navigator from "./screens/Navigator";
 import client from "./util/client";
-import ThemeProvider from "./components/ThemeProvider";
 import ThemeProvider2 from "./components/ThemeProvider2";
 
 if (__DEV__) {
@@ -26,9 +25,7 @@ const App = () => {
   return (
     <ApolloProvider client={client}>
       <ThemeProvider2>
-        <ThemeProvider>
           <Navigator />
-        </ThemeProvider>
       </ThemeProvider2>
     </ApolloProvider>
   );
