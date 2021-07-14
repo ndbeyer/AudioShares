@@ -47,7 +47,7 @@ const theme = {
 
 console.log('theme', theme);
 
-const ThemeProvider = ({ children }) => {
+const ThemeProvider = ({ children }: { children?: React.Element }): React.Element => {
 	return (
 		<SNThemeProvider theme={theme}>
 			<PortalProvider>{children}</PortalProvider>
