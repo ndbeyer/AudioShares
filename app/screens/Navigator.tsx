@@ -27,31 +27,28 @@ import { makeUserBetTransactions } from '../state/user';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const headerShownFalseOptions = { headerShown: false };
+const options = { headerShown: false, tabBarVisible: false };
 
 const CreateStack = (): React.Element => {
 	return (
 		<Stack.Navigator
 			initialRouteName="Playlists"
 			// eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
-			screenOptions={{
-				headerTitle: (options) => {
-					return (
-						<Label light size="xl">
-							{options.children}
-						</Label>
-					);
-				},
-			}}
+			// screenOptions={{
+			// 	headerTitle: (options) => {
+			// 		return (
+			// 			<Label light size="xl">
+			// 				{options.children}
+			// 			</Label>
+			// 		);
+			// 	},
+			// }}
+			options={options}
 		>
-			<Stack.Screen name="Playlists" component={PlaylistScreen} />
-			<Stack.Screen name="Artists" component={ArtistsOfPlaylistScreen} />
-			<Stack.Screen name="Artist" component={ArtistScreen} options={headerShownFalseOptions} />
-			<Stack.Screen
-				name="ArtistBetsScreen"
-				component={ArtistBetsScreen}
-				options={headerShownFalseOptions}
-			/>
+			<Stack.Screen name="Playlists" component={PlaylistScreen} options={options} />
+			<Stack.Screen name="Artists" component={ArtistsOfPlaylistScreen} options={options} />
+			<Stack.Screen name="Artist" component={ArtistScreen} options={options} />
+			<Stack.Screen name="ArtistBetsScreen" component={ArtistBetsScreen} options={options} />
 		</Stack.Navigator>
 	);
 };
@@ -114,11 +111,12 @@ const LoggedInNavigator = () => {
 						/>
 					),
 				})}
+				options={options}
 			>
-				<Tab.Screen name="Dashboard" component={DashboardScreen} />
-				<Tab.Screen name="Create" component={CreateStack} />
-				<Tab.Screen name="Transactions" component={TransactionsScreen} />
-				<Tab.Screen name="Settings" component={SettingsScreen} />
+				<Tab.Screen name="Dashboard" component={DashboardScreen} options={options} />
+				<Tab.Screen name="Create" component={CreateStack} options={options} />
+				<Tab.Screen name="Transactions" component={TransactionsScreen} options={options} />
+				<Tab.Screen name="Settings" component={SettingsScreen} options={options} />
 			</Tab.Navigator>
 		</>
 	);
