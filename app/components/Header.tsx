@@ -1,0 +1,73 @@
+import React from 'react';
+import { useWindowDimensions } from 'react-native';
+import styled, { useTheme } from 'styled-components';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { Label, Paragraph } from './Text';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
+
+const DEFAULT_HEADER_HEIGHT = 6;
+
+const HeaderWrapper = styled.View`
+	height: ${(p) => p.height || 0}px;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	background-color: ${(p) => p.theme.colors.background0};
+`;
+
+const HeaderContent = styled.View`
+	margin-top: ${(p) => p.topInsets}px;
+	background-color: transparent;
+	width: 100%;
+	height: ${(p) => p.height}px;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+`;
+
+const StyledParagraph = styled(Paragraph)`
+	position: absolute;
+	left: 0;
+`;
+
+export const useHeaderHeight = (
+	{
+		headerContentHeight,
+	}: {
+		headerContentHeight?: number;
+	} = { headerContentHeight: 0 }
+): number => {
+	const theme = useTheme();
+	const { top: topInsets } = useSafeAreaInsets();
+	const headerHeight = DEFAULT_HEADER_HEIGHT * theme.rem + topInsets + headerContentHeight;
+	return headerHeight;
+};
+
+const Header = (): React.Element => {
+	const navigation = useNavigation();
+	const theme = useTheme();
+	const navigationState = useNavigationState((state) => state);
+
+	const { top: topInsets } = useSafeAreaInsets();
+	const headerHeight = DEFAULT_HEADER_HEIGHT * theme.rem + topInsets;
+
+	console.log('navigationState', navigationState);
+
+	const handlePress = React.useCallback(() => {
+		navigation.goBack();
+	}, [navigation]);
+
+	return (
+		<HeaderWrapper height={headerHeight}>
+			<HeaderContent topInsets={topInsets} height={headerHeight - topInsets}>
+				{navigationState.index > 0 ? (
+					<StyledParagraph onPress={handlePress}> Back </StyledParagraph>
+				) : null}
+				<Label size="xl">{navigationState.routeNames[navigationState.index]}</Label>
+			</HeaderContent>
+		</HeaderWrapper>
+	);
+};
+
+export default Header;

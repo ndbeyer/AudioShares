@@ -3,16 +3,16 @@ import { ActivityIndicator } from 'react-native';
 import styled, { useTheme } from 'styled-components';
 
 const Wrapper = styled.View`
-	height: 100%;
+	height: ${(p) => (p.height ? p.height + 'px' : '100%')};
 	width: 100%;
 	justify-content: center;
 	align-items: center;
 `;
 
-const Loading = (): React.Element => {
+const Loading = ({ height }: { height: number }): React.Element => {
 	const theme = useTheme();
 	return (
-		<Wrapper>
+		<Wrapper height={height}>
 			<ActivityIndicator color={theme.colors.neutral0} />
 		</Wrapper>
 	);

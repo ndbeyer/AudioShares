@@ -59,7 +59,7 @@ const ArtistScreen = ({
 	}, [artist, navigation]);
 
 	return !artist ? (
-		<Loading />
+		<ScrollViewScreen loading={true} />
 	) : (
 		<ScrollViewScreen>
 			<ArtistImage artist={artist} />
