@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
 import { useWindowDimensions } from 'react-native';
-import styled, { useTheme } from 'styled-components';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import styled from 'styled-components';
 
 import Loading from './Loading';
 import Header, { useHeaderHeight } from './Header';
+import Footer, { useFooterHeight } from './Footer';
 
 const Screen = styled.View`
 	width: 100%;
@@ -24,16 +24,6 @@ const StyledScrollView = styled.ScrollView.attrs({
 	flex: 1;
 `;
 
-const DEFAULT_FOOTER_HEIGHT = 7;
-
-const Footer = styled.View`
-	height: ${(p) => p.height}px;
-	width: 100%;
-	position: absolute;
-	bottom: 0;
-	background-color: ${(p) => p.theme.colors.background0};
-`;
-
 const ScrollView = ({
 	renderHeaderContent,
 	children,
@@ -45,13 +35,10 @@ const ScrollView = ({
 	loading?: boolean;
 	style?: { [key: string]: string | number };
 }): React.Element => {
-	const theme = useTheme();
-
 	const { height } = useWindowDimensions();
-	const { bottom: bottomInsets } = useSafeAreaInsets();
 
 	const headerHeight = useHeaderHeight();
-	const footerHeight = DEFAULT_FOOTER_HEIGHT * theme.rem + bottomInsets;
+	const footerHeight = useFooterHeight();
 	const contentHeight = height - headerHeight - footerHeight;
 
 	const contentContainerStyle = React.useMemo(
@@ -76,7 +63,7 @@ const ScrollView = ({
 					{loading ? <Loading height={contentHeight} /> : children}
 				</StyledScrollView>
 				<Header />
-				<Footer height={footerHeight} />
+				<Footer />
 			</Screen>
 		</>
 	);

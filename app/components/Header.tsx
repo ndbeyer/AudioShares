@@ -17,7 +17,7 @@ const HeaderWrapper = styled.View`
 `;
 
 const HeaderContent = styled.View`
-	margin-top: ${(p) => p.topInsets}px;
+	margin-top: ${(p) => p.marginTop}px;
 	background-color: transparent;
 	width: 100%;
 	height: ${(p) => p.height}px;
@@ -40,7 +40,8 @@ export const useHeaderHeight = (
 ): number => {
 	const theme = useTheme();
 	const { top: topInsets } = useSafeAreaInsets();
-	const headerHeight = DEFAULT_HEADER_HEIGHT * theme.rem + topInsets + headerContentHeight;
+	const headerHeight =
+		DEFAULT_HEADER_HEIGHT * theme.rem + topInsets + (headerContentHeight as number);
 	return headerHeight;
 };
 
@@ -60,7 +61,7 @@ const Header = (): React.Element => {
 
 	return (
 		<HeaderWrapper height={headerHeight}>
-			<HeaderContent topInsets={topInsets} height={headerHeight - topInsets}>
+			<HeaderContent marginTop={topInsets} height={headerHeight - topInsets}>
 				{navigationState.index > 0 ? (
 					<StyledParagraph onPress={handlePress}> Back </StyledParagraph>
 				) : null}
