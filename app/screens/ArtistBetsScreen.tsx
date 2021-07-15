@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ScrollViewScreen from '../components/ScrollViewScreen';
+import HeaderScrollView from '../components/HeaderScrollView';
 import Button from '../components/Button';
 import CardWrapper from '../components/CardWrapper';
 import Loading from '../components/Loading';
@@ -37,9 +37,9 @@ const ArtistBetsScreen = ({
 	);
 
 	return !artist ? (
-		<Loading />
+		<HeaderScrollView loading={true} />
 	) : (
-		<ScrollViewScreen renderHeaderContent={renderHeaderContent}>
+		<HeaderScrollView renderHeaderContent={renderHeaderContent}>
 			{artist.joinableBets?.map((bet) => (
 				<CardWrapper key={bet.id}>
 					<BetStats
@@ -58,7 +58,7 @@ const ArtistBetsScreen = ({
 					/>
 				</CardWrapper>
 			))}
-		</ScrollViewScreen>
+		</HeaderScrollView>
 	);
 };
 

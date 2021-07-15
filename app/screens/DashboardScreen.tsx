@@ -7,7 +7,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import styled, { useTheme } from 'styled-components';
 
-import ScrollViewScreen from '../components/ScrollViewScreen';
+import HeaderScrollView from '../components/HeaderScrollView';
 import EmptyCard from '../components/EmptyCard';
 import { Paragraph } from '../components/Text';
 import BetStats from '../components/BetStats';
@@ -103,9 +103,9 @@ const DashboardScreen = (): React.Element => {
 	const shadowProps = React.useMemo(() => theme.elevation(1), [theme]);
 
 	return !filteredBets ? (
-		<Loading />
+		<HeaderScrollView loading={true} />
 	) : (
-		<ScrollViewScreen renderHeaderContent={renderHeaderContent}>
+		<HeaderScrollView renderHeaderContent={renderHeaderContent}>
 			{filteredBets?.length ? (
 				filteredBets.map((bet) => {
 					return (
@@ -149,7 +149,7 @@ const DashboardScreen = (): React.Element => {
 			) : (
 				<EmptyCard message="No bets were found" />
 			)}
-		</ScrollViewScreen>
+		</HeaderScrollView>
 	);
 };
 

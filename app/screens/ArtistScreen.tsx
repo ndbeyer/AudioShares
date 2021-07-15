@@ -5,9 +5,8 @@ import React from 'react';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import styled from 'styled-components';
 
-import ScrollViewScreen from '../components/ScrollViewScreen';
+import HeaderScrollView from '../components/HeaderScrollView';
 import Button from '../components/Button';
-import Loading from '../components/Loading';
 import ArtistStatsRow from '../components/ArtistStatsRow';
 import ArtistImage from '../components/ArtistImage';
 import Graph from '../components/Graph';
@@ -59,9 +58,9 @@ const ArtistScreen = ({
 	}, [artist, navigation]);
 
 	return !artist ? (
-		<ScrollViewScreen loading={true} />
+		<HeaderScrollView loading={true} />
 	) : (
-		<ScrollViewScreen>
+		<HeaderScrollView>
 			<ArtistImage artist={artist} />
 			<ArtistStatsRow
 				monthlyListeners={artist.monthlyListeners}
@@ -75,7 +74,7 @@ const ArtistScreen = ({
 				) : null}
 				<Button onPress={handleCreateNewBet} label="Create new bet" />
 			</Row>
-		</ScrollViewScreen>
+		</HeaderScrollView>
 	);
 };
 

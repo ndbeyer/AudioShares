@@ -5,7 +5,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { format } from 'date-fns';
 
-import ScrollViewScreen from '../components/ScrollViewScreen';
+import HeaderScrollView from '../components/HeaderScrollView';
 import EmptyCard from '../components/EmptyCard';
 import CardWrapper from '../components/CardWrapper';
 import Loading from '../components/Loading';
@@ -62,8 +62,10 @@ const TransactionsScreen = (): React.Element => {
 		);
 	}, [currentUser]);
 
-	return (
-		<ScrollViewScreen loading={!transactions} renderHeaderContent={MoneyHeader}>
+	return !transactions ? (
+		<HeaderScrollView loading={true} />
+	) : (
+		<HeaderScrollView loading={!transactions} renderHeaderContent={MoneyHeader}>
 			{transactions?.length ? (
 				transactions.map((transaction) => {
 					return <TransactionCard key={transaction.id} {...transaction} />;
@@ -71,7 +73,7 @@ const TransactionsScreen = (): React.Element => {
 			) : (
 				<EmptyCard message="No transactions were found" />
 			)}
-		</ScrollViewScreen>
+		</HeaderScrollView>
 	);
 };
 

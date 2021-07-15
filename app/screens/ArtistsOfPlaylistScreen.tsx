@@ -4,7 +4,7 @@
 import React from 'react';
 import { useNavigation, RouteProp } from '@react-navigation/native';
 
-import ScrollViewScreen from '../components/ScrollViewScreen';
+import HeaderScrollView from '../components/HeaderScrollView';
 import Loading from '../components/Loading';
 import { Card } from './PlaylistScreen';
 
@@ -27,14 +27,14 @@ const ArtistsOfPlaylistScreen = ({
 	);
 
 	return !artistsOfPlaylist ? (
-		<Loading />
+		<HeaderScrollView loading={true} />
 	) : (
-		<ScrollViewScreen>
+		<HeaderScrollView>
 			{artistsOfPlaylist?.map(({ id, name, image }) => (
 				// TODO: replace Card
 				<Card key={id} id={id} name={name} image={image} onPress={() => handlePress(id)} />
 			))}
-		</ScrollViewScreen>
+		</HeaderScrollView>
 	);
 };
 
