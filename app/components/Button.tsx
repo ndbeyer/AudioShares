@@ -31,9 +31,9 @@ const Button = ({
 	outline,
 	loading,
 	disabled,
-	textColor = 'neutral0',
+	textColor = 'accentText0',
 	textColorDisabled = 'neutral2',
-	backgroundColor = 'background1',
+	backgroundColor = 'accent0',
 	light = true,
 	margin = '1rem',
 }: {

@@ -7,7 +7,7 @@ import PortalProvider from './PortalProvider';
 const theme = {
 	rem: UNIT,
 	iconPaths: pathDefs(),
-	colors: colorDefs({ accentColor: '#34eb46', chromaticity: 50 }),
+	colors: colorDefs({ accentColor: 'darkblue', chromaticity: 5 }),
 	elevation: (value) => ({
 		shadowColor: 'black',
 		shadowOffset: { width: 0, height: value },
