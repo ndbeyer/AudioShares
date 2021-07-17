@@ -65,8 +65,6 @@ const HeaderScrollView = ({
 		<>
 			<Screen height={screenHeight}>
 				<Background height={screenHeight} />
-				{/* <HeaderSpacer height={headerHeight} /> */}
-				{/* {renderHeaderContent ? renderHeaderContent() : null} */}
 				<StyledScrollView contentContainerStyle={contentContainerStyle} height={screenHeight}>
 					{loading ? <Loading height={contentHeight} /> : children}
 				</StyledScrollView>
