@@ -13,6 +13,7 @@ const Icon = ({
 	strokeWidth = 1,
 	name = 'back',
 	onPress,
+	style,
 }: {
 	id?: string;
 	color?: string;
@@ -20,7 +21,8 @@ const Icon = ({
 	size?: string;
 	strokeWidth?: number;
 	name: string;
-	onPress: (id?: string) => void;
+	onPress?: (id?: string) => void;
+	style: { [keys: string]: string | number };
 }): React.Element => {
 	const theme = useTheme();
 	const pixelSize = theme.rem2px(size);
@@ -31,7 +33,7 @@ const Icon = ({
 	}, [id, onPress]);
 
 	return (
-		<Wrapper onPress={handlePress}>
+		<Wrapper onPress={handlePress} style={style}>
 			<Svg width={pixelSize} height={pixelSize} viewBox="0 0 24 24">
 				<Path
 					fill={outline ? 'none' : col}

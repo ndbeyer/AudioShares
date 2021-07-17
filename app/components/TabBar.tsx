@@ -31,7 +31,7 @@ const FooterContent = styled.View`
 	align-items: center;
 `;
 
-const TabIconWrapper = styled.View`
+const TabIconWrapper = styled.TouchableOpacity`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
@@ -76,12 +76,12 @@ const MyTabBar = ({ state, descriptors, navigation }): React.Element => {
 					};
 
 					return (
-						<TabIconWrapper key={`${iconName}+${index}`}>
+						<TabIconWrapper onPress={handlePress} key={`${iconName}+${index}`}>
 							<Icon
 								size="3.25rem"
 								name={iconName}
-								onPress={handlePress}
 								color={isFocused ? 'accent0' : 'neutral3'}
+								onPress={handlePress}
 							/>
 							<Paragraph size="s" margin="0.5rem 0 0 0" color={isFocused ? 'accent0' : 'neutral3'}>
 								{label}

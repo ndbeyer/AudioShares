@@ -92,7 +92,7 @@ export const tabNavigatorConfig: {
 		name: 'Dashboard',
 		component: StackNavigatorCreator('Dashboard'),
 		options: defaultOptions,
-		icon: 'profile',
+		icon: 'dashboard',
 	},
 	{
 		name: 'Playlists',

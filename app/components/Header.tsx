@@ -3,6 +3,7 @@ import styled, { useTheme } from 'styled-components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Label, Paragraph } from './Text';
+import Icon from './Icon';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 
 const DEFAULT_HEADER_HEIGHT = 6;
@@ -25,9 +26,10 @@ const HeaderContent = styled.View`
 	align-items: center;
 `;
 
-const StyledParagraph = styled(Paragraph)`
+const StyledIcon = styled(Icon)`
 	position: absolute;
 	left: 0;
+	margin: ${(p) => p.theme.rem2px('0 1.5rem')};
 `;
 
 export const useHeaderHeight = (
@@ -60,7 +62,7 @@ const Header = (): React.Element => {
 		<HeaderWrapper height={headerHeight}>
 			<HeaderContent marginTop={topInsets} height={headerHeight - topInsets}>
 				{navigationState.index > 0 ? (
-					<StyledParagraph onPress={handleGoBack}> Back </StyledParagraph>
+					<StyledIcon size="3.25rem" name="back" onPress={handleGoBack} />
 				) : null}
 				<Label size="xl">{navigationState.routeNames[navigationState.index]}</Label>
 			</HeaderContent>
