@@ -52,8 +52,6 @@ const Header = (): React.Element => {
 	const { top: topInsets } = useSafeAreaInsets();
 	const headerHeight = DEFAULT_HEADER_HEIGHT * theme.rem + topInsets;
 
-	console.log('navigationState', navigationState);
-
 	const handleGoBack = React.useCallback(() => {
 		navigation.goBack();
 	}, [navigation]);
