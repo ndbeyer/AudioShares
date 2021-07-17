@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import Loading from './Loading';
 import Header, { useHeaderHeight } from './Header';
-import { useTabBarHeight } from '../screens/TabBar';
+import { useTabBarHeight } from '../components/TabBar';
 
 const Screen = styled.View`
 	width: 100%;

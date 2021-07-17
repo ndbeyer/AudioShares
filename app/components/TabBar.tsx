@@ -6,9 +6,9 @@ import 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import styled, { useTheme } from 'styled-components';
 
-import { Paragraph } from '../components/Text';
-import Icon from '../components/Icon';
-import { tabNavigatorConfig } from './Navigator';
+import { Paragraph } from './Text';
+import Icon from './Icon';
+import { tabNavigatorConfig } from '../screens/Navigator';
 
 const DEFAULT_FOOTER_HEIGHT = 7;
 
@@ -51,7 +51,7 @@ export const useTabBarHeight = (
 	return footerHeight;
 };
 
-const MyTabBar = ({ state, descriptors, navigation }) => {
+const MyTabBar = ({ state, descriptors, navigation }): React.Element => {
 	const theme = useTheme();
 	const { bottom: bottomInsets } = useSafeAreaInsets();
 	const footerHeight = DEFAULT_FOOTER_HEIGHT * theme.rem + bottomInsets;
@@ -81,9 +81,9 @@ const MyTabBar = ({ state, descriptors, navigation }) => {
 								size="3.25rem"
 								name={iconName}
 								onPress={handlePress}
-								color={isFocused ? 'accent0' : 'neutral0'}
+								color={isFocused ? 'accent0' : 'neutral3'}
 							/>
-							<Paragraph size="s" margin="0.5rem 0 0 0" color={isFocused ? 'accent0' : 'neutral0'}>
+							<Paragraph size="s" margin="0.5rem 0 0 0" color={isFocused ? 'accent0' : 'neutral3'}>
 								{label}
 							</Paragraph>
 						</TabIconWrapper>

@@ -48,7 +48,7 @@ export const Card = ({
 	);
 };
 
-const PlaylistScreen = (): React.Element => {
+const PlaylistsView = (): React.Element => {
 	const navigation = useNavigation();
 
 	const { data } = useQuery(
@@ -82,4 +82,4 @@ const PlaylistScreen = (): React.Element => {
 	);
 };
 
-export default PlaylistScreen;
+export default PlaylistsView;

@@ -10,17 +10,16 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, TouchableOpacity, Text } from 'react-native';
 
 import Loading from '../components/Loading';
+import TabBar from '../components/TabBar';
 import InitializingScreen from './InitializingScreen';
 import LoginScreen from './LoginScreen';
 import DashboardScreen from './DashboardScreen';
-import PlaylistScreen from './PlaylistScreen';
-import ArtistsOfPlaylistScreen from './ArtistsOfPlaylistScreen';
-import ArtistScreen from './ArtistScreen';
+import PlaylistsView from './PlaylistsView';
+import PlaylistDetailView from './PlaylistDetailView';
+import ArtistDetailView from './ArtistDetailView';
 import TransactionsScreen from './TransactionsScreen';
 import SettingsScreen from './SettingsScreen';
 import ArtistBetsScreen from './ArtistBetsScreen';
-
-import TabBar from './TabBar';
 
 import { useUser, fetchUser } from '../state/user';
 import { refreshLogin } from '../state/auth';
@@ -31,17 +30,17 @@ const defaultOptions = { headerShown: false, tabBarVisible: false };
 const stackNavigatorConfig = [
 	{
 		name: 'Playlists',
-		component: PlaylistScreen,
+		component: PlaylistsView,
 		options: defaultOptions,
 	},
 	{
 		name: 'Artists',
-		component: ArtistsOfPlaylistScreen,
+		component: PlaylistDetailView,
 		options: defaultOptions,
 	},
 	{
 		name: 'Artist',
-		component: ArtistScreen,
+		component: ArtistDetailView,
 		options: defaultOptions,
 	},
 	{

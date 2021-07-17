@@ -23,7 +23,7 @@ const Row = styled.View`
 	align-items: center;
 `;
 
-const ArtistScreen = ({
+const ArtistDetailView = ({
 	route,
 }: {
 	route: RouteProp<{ params: { artistId: string } }, 'params'>;
@@ -78,4 +78,4 @@ const ArtistScreen = ({
 	);
 };
 
-export default ArtistScreen;
+export default ArtistDetailView;

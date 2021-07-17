@@ -6,11 +6,11 @@ import { useNavigation, RouteProp } from '@react-navigation/native';
 
 import HeaderScrollView from '../components/HeaderScrollView';
 import Loading from '../components/Loading';
-import { Card } from './PlaylistScreen';
+import { Card } from './PlaylistsView';
 
 import { useArtistsOfPlaylist } from '../state/artist';
 
-const ArtistsOfPlaylistScreen = ({
+const PlaylistDetailView = ({
 	route,
 }: {
 	route: RouteProp<{ params: { playlistId: string } }, 'params'>;
@@ -40,4 +40,4 @@ const ArtistsOfPlaylistScreen = ({
 	);
 };
 
-export default ArtistsOfPlaylistScreen;
+export default PlaylistDetailView;
