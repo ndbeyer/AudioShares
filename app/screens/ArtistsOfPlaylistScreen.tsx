@@ -26,6 +26,8 @@ const ArtistsOfPlaylistScreen = ({
 		[navigation]
 	);
 
+	// TODO: handle empty playlist
+
 	return !artistsOfPlaylist ? (
 		<HeaderScrollView loading={true} />
 	) : (

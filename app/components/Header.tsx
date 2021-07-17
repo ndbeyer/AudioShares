@@ -1,5 +1,4 @@
 import React from 'react';
-import { useWindowDimensions } from 'react-native';
 import styled, { useTheme } from 'styled-components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -55,7 +54,7 @@ const Header = (): React.Element => {
 
 	console.log('navigationState', navigationState);
 
-	const handlePress = React.useCallback(() => {
+	const handleGoBack = React.useCallback(() => {
 		navigation.goBack();
 	}, [navigation]);
 
@@ -63,7 +62,7 @@ const Header = (): React.Element => {
 		<HeaderWrapper height={headerHeight}>
 			<HeaderContent marginTop={topInsets} height={headerHeight - topInsets}>
 				{navigationState.index > 0 ? (
-					<StyledParagraph onPress={handlePress}> Back </StyledParagraph>
+					<StyledParagraph onPress={handleGoBack}> Back </StyledParagraph>
 				) : null}
 				<Label size="xl">{navigationState.routeNames[navigationState.index]}</Label>
 			</HeaderContent>

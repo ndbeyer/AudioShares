@@ -7,9 +7,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Icon from '../components/Icon';
+import { View, TouchableOpacity, Text } from 'react-native';
+
 import Loading from '../components/Loading';
-import { Label } from '../components/Text';
 import InitializingScreen from './InitializingScreen';
 import LoginScreen from './LoginScreen';
 import DashboardScreen from './DashboardScreen';
@@ -20,36 +20,168 @@ import TransactionsScreen from './TransactionsScreen';
 import SettingsScreen from './SettingsScreen';
 import ArtistBetsScreen from './ArtistBetsScreen';
 
+import TabBar from './TabBar';
+
 import { useUser, fetchUser } from '../state/user';
 import { refreshLogin } from '../state/auth';
 import { makeUserBetTransactions } from '../state/user';
 
+const defaultOptions = { headerShown: false, tabBarVisible: false };
+
+const stackNavigatorConfig = [
+	{
+		name: 'Playlists',
+		component: PlaylistScreen,
+		options: defaultOptions,
+	},
+	{
+		name: 'Artists',
+		component: ArtistsOfPlaylistScreen,
+		options: defaultOptions,
+	},
+	{
+		name: 'Artist',
+		component: ArtistScreen,
+		options: defaultOptions,
+	},
+	{
+		name: 'ArtistBetsScreen',
+		component: ArtistBetsScreen,
+		options: defaultOptions,
+	},
+	{
+		name: 'Dashboard',
+		component: DashboardScreen,
+		options: defaultOptions,
+	},
+	{
+		name: 'Transactions',
+		component: TransactionsScreen,
+		options: defaultOptions,
+	},
+	{
+		name: 'Settings',
+		component: SettingsScreen,
+		options: defaultOptions,
+	},
+];
+
 const Stack = createStackNavigator();
+
+const StackNavigatorCreator = (initialRouteName) => () => {
+	return (
+		<Stack.Navigator initialRouteName={initialRouteName} options={defaultOptions}>
+			{stackNavigatorConfig.map(({ name, component, options }, index) => (
+				<Stack.Screen
+					key={`${name}+${index}`}
+					name={name}
+					component={component}
+					options={options}
+				/>
+			))}
+		</Stack.Navigator>
+	);
+};
+
+export const tabNavigatorConfig: {
+	name: string;
+	component: () => () => React.Element;
+	options: { [key: string]: boolean };
+	icon: string;
+}[] = [
+	{
+		name: 'Dashboard',
+		component: StackNavigatorCreator('Dashboard'),
+		options: defaultOptions,
+		icon: 'profile',
+	},
+	{
+		name: 'Playlists',
+		component: StackNavigatorCreator('Playlists'),
+		options: defaultOptions,
+		icon: 'play',
+	},
+	{
+		name: 'Transactions',
+		component: StackNavigatorCreator('Transactions'),
+		options: defaultOptions,
+		icon: 'graph',
+	},
+	{
+		name: 'Settings',
+		component: StackNavigatorCreator('Settings'),
+		options: defaultOptions,
+		icon: 'gear',
+	},
+];
 const Tab = createBottomTabNavigator();
 
-const options = { headerShown: false, tabBarVisible: false };
-
-const CreateStack = (): React.Element => {
+const MyTabBar = ({ state, descriptors, navigation }) => {
 	return (
-		<Stack.Navigator
-			initialRouteName="Playlists"
-			// eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
-			// screenOptions={{
-			// 	headerTitle: (options) => {
-			// 		return (
-			// 			<Label light size="xl">
-			// 				{options.children}
-			// 			</Label>
-			// 		);
-			// 	},
-			// }}
-			options={options}
+		<View
+			style={{
+				flexDirection: 'row',
+				backgroundColor: '#F4AF5F',
+				height: 50,
+				borderRadius: 50,
+				justifyContent: 'center',
+				alignItems: 'center',
+			}}
 		>
-			<Stack.Screen name="Playlists" component={PlaylistScreen} options={options} />
-			<Stack.Screen name="Artists" component={ArtistsOfPlaylistScreen} options={options} />
-			<Stack.Screen name="Artist" component={ArtistScreen} options={options} />
-			<Stack.Screen name="ArtistBetsScreen" component={ArtistBetsScreen} options={options} />
-		</Stack.Navigator>
+			{state.routes.map((route, index) => {
+				const { options } = descriptors[route.key];
+				const label =
+					options.tabBarLabel !== undefined
+						? options.tabBarLabel
+						: options.title !== undefined
+						? options.title
+						: route.name;
+
+				const isFocused = state.index === index;
+
+				const onPress = () => {
+					const event = navigation.emit({
+						type: 'tabPress',
+						target: route.key,
+					});
+
+					if (!isFocused && !event.defaultPrevented) {
+						navigation.navigate(route.name);
+					}
+				};
+
+				const onLongPress = () => {
+					navigation.emit({
+						type: 'tabLongPress',
+						target: route.key,
+					});
+				};
+
+				return (
+					<TouchableOpacity
+						accessibilityRole="button"
+						accessibilityStates={isFocused ? ['selected'] : []}
+						accessibilityLabel={options.tabBarAccessibilityLabel}
+						testID={options.tabBarTestID}
+						onPress={onPress}
+						onLongPress={onLongPress}
+						style={{ flex: 1, alignItems: 'center' }}
+					>
+						<Text style={{ color: isFocused ? '#673ab7' : '#222' }}>{label}</Text>
+					</TouchableOpacity>
+				);
+			})}
+		</View>
+	);
+};
+
+const TabNavigator = (): React.Element => {
+	return (
+		<Tab.Navigator initialRouteName="Playlists" tabBar={(props) => <TabBar {...props} />}>
+			{tabNavigatorConfig.map(({ name, component, options }, index) => (
+				<Tab.Screen key={`${name}+${index}`} name={name} component={component} />
+			))}
+		</Tab.Navigator>
 	);
 };
 
@@ -73,13 +205,6 @@ const useAppState = () => {
 	else return 'LOGGED_OUT';
 };
 
-const routeIcons = {
-	Dashboard: 'profile',
-	Create: 'play',
-	Transactions: 'graph',
-	Settings: 'gear',
-};
-
 const LoggedInNavigator = () => {
 	const [loading, setLoading] = React.useState(true);
 
@@ -91,35 +216,7 @@ const LoggedInNavigator = () => {
 		})();
 	}, []);
 
-	return loading ? (
-		<Loading />
-	) : (
-		<>
-			<Tab.Navigator
-				initialRouteName="Create"
-				// eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
-				tabBarOptions={{
-					showLabel: false,
-				}}
-				// eslint-disable-next-line react-perf/jsx-no-new-function-as-prop
-				screenOptions={({ route }) => ({
-					tabBarIcon: ({ focused }) => (
-						<Icon
-							size="3rem"
-							name={routeIcons[route.name]}
-							color={focused ? 'neutral0' : 'neutral4'}
-						/>
-					),
-				})}
-				options={options}
-			>
-				<Tab.Screen name="Dashboard" component={DashboardScreen} options={options} />
-				<Tab.Screen name="Create" component={CreateStack} options={options} />
-				<Tab.Screen name="Transactions" component={TransactionsScreen} options={options} />
-				<Tab.Screen name="Settings" component={SettingsScreen} options={options} />
-			</Tab.Navigator>
-		</>
-	);
+	return loading ? <Loading /> : <TabNavigator />;
 };
 
 const Navigator = (): React.Element => {
@@ -137,7 +234,7 @@ const Navigator = (): React.Element => {
 							name="Login"
 							component={LoginScreen}
 							// eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
-							options={{ headerShown: false }}
+							options={defaultOptions}
 						/>
 					</Stack.Navigator>
 				</>
@@ -149,7 +246,7 @@ const Navigator = (): React.Element => {
 						name="Initializing"
 						component={InitializingScreen}
 						// eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
-						options={{ headerShown: false }}
+						options={defaultOptions}
 					/>
 				</Stack.Navigator>
 			)}

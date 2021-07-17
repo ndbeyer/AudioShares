@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import Loading from './Loading';
 import Header, { useHeaderHeight } from './Header';
-import Footer, { useFooterHeight } from './Footer';
+import { useTabBarHeight } from '../screens/TabBar';
 
 const Screen = styled.View`
 	width: 100%;
@@ -38,20 +38,20 @@ const ScrollView = ({
 	const { height } = useWindowDimensions();
 
 	const headerHeight = useHeaderHeight();
-	const footerHeight = useFooterHeight();
-	const contentHeight = height - headerHeight - footerHeight;
+	const tabBarHeight = useTabBarHeight();
+	const contentHeight = height - headerHeight - tabBarHeight;
 
 	const contentContainerStyle = React.useMemo(
 		() => ({
 			alignItems: 'center',
 			width: '100%',
 			paddingTop: headerHeight,
-			paddingBottom: footerHeight,
+			paddingBottom: tabBarHeight,
 			// borderStyle: 'solid',
 			// borderColor: 'green',
 			// borderWidth: 3,
 		}),
-		[footerHeight, headerHeight]
+		[tabBarHeight, headerHeight]
 	);
 
 	return (
@@ -63,7 +63,6 @@ const ScrollView = ({
 					{loading ? <Loading height={contentHeight} /> : children}
 				</StyledScrollView>
 				<Header />
-				<Footer />
 			</Screen>
 		</>
 	);

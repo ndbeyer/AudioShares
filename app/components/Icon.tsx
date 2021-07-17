@@ -1,34 +1,47 @@
 // @flow
 import * as React from 'react';
-import { useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import Svg, { Path } from 'react-native-svg';
 
+const Wrapper = styled.TouchableOpacity``;
+
 const Icon = ({
+	id,
 	color = 'accent0',
 	outline,
 	size = '2rem',
 	strokeWidth = 1,
 	name = 'back',
+	onPress,
 }: {
+	id?: string;
 	color?: string;
 	outline?: boolean;
 	size?: string;
 	strokeWidth?: number;
 	name: string;
+	onPress: (id?: string) => void;
 }): React.Element => {
 	const theme = useTheme();
 	const pixelSize = theme.rem2px(size);
 	const col = theme.colors[color.replace('$', '')] || color;
+
+	const handlePress = React.useCallback(() => {
+		onPress && onPress(id);
+	}, [id, onPress]);
+
 	return (
-		<Svg width={pixelSize} height={pixelSize} viewBox="0 0 24 24">
-			<Path
-				fill={outline ? 'none' : col}
-				stroke={outline ? col : 'none'}
-				fillRule={outline ? 'nonzero' : 'evenodd'}
-				d={theme.iconPaths[name]}
-				strokeWidth={outline ? strokeWidth : 0}
-			/>
-		</Svg>
+		<Wrapper onPress={handlePress}>
+			<Svg width={pixelSize} height={pixelSize} viewBox="0 0 24 24">
+				<Path
+					fill={outline ? 'none' : col}
+					stroke={outline ? col : 'none'}
+					fillRule={outline ? 'nonzero' : 'evenodd'}
+					d={theme.iconPaths[name]}
+					strokeWidth={outline ? strokeWidth : 0}
+				/>
+			</Svg>
+		</Wrapper>
 	);
 };
 
