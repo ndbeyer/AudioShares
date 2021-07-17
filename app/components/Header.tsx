@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Label, Paragraph } from './Text';
+import { Label } from './Text';
 import Icon from './Icon';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 
@@ -16,7 +16,7 @@ const HeaderWrapper = styled.View`
 	background-color: ${(p) => p.theme.colors.background0};
 `;
 
-const HeaderContent = styled.View`
+const HeaderBaseContent = styled.View`
 	margin-top: ${(p) => p.marginTop}px;
 	background-color: transparent;
 	width: 100%;
@@ -46,26 +46,41 @@ export const useHeaderHeight = (
 	return headerHeight;
 };
 
-const Header = (): React.Element => {
+const Header = ({
+	renderHeaderContent,
+	headerContentHeight = 0,
+}: {
+	renderHeaderContent?: () => React.Element;
+	headerContentHeight?: number;
+}): React.Element => {
+	if (
+		(renderHeaderContent && !headerContentHeight) ||
+		(!renderHeaderContent && headerContentHeight)
+	) {
+		console.log('renderHeaderContent and headerContentHeight must both be provided');
+	}
+
 	const navigation = useNavigation();
 	const theme = useTheme();
 	const navigationState = useNavigationState((state) => state);
 
 	const { top: topInsets } = useSafeAreaInsets();
-	const headerHeight = DEFAULT_HEADER_HEIGHT * theme.rem + topInsets;
+	const headerTotalHeight = DEFAULT_HEADER_HEIGHT * theme.rem + topInsets + headerContentHeight;
+	const headerBaseContentHeight = headerTotalHeight - headerContentHeight - topInsets;
 
 	const handleGoBack = React.useCallback(() => {
 		navigation.goBack();
 	}, [navigation]);
 
 	return (
-		<HeaderWrapper height={headerHeight}>
-			<HeaderContent marginTop={topInsets} height={headerHeight - topInsets}>
+		<HeaderWrapper height={headerTotalHeight}>
+			<HeaderBaseContent marginTop={topInsets} height={headerBaseContentHeight}>
 				{navigationState.index > 0 ? (
 					<StyledIcon size="3.25rem" name="back" onPress={handleGoBack} />
 				) : null}
 				<Label size="xl">{navigationState.routeNames[navigationState.index]}</Label>
-			</HeaderContent>
+			</HeaderBaseContent>
+			{renderHeaderContent ? renderHeaderContent() : null}
 		</HeaderWrapper>
 	);
 };

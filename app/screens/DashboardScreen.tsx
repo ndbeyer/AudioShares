@@ -12,7 +12,6 @@ import EmptyCard from '../components/EmptyCard';
 import { Paragraph } from '../components/Text';
 import BetStats from '../components/BetStats';
 import ArtistImage from '../components/ArtistImage';
-import Loading from '../components/Loading';
 
 import { BetInfoFragment } from '../state/bet';
 import { ArtistInfoFragment } from '../state/artist';
@@ -23,9 +22,11 @@ const Image = styled(ArtistImage)`
 
 const filterTypes = ['JOINABLE', 'INVALID', 'RUNNING', 'ENDED'];
 
+const HEIGHT = 6;
+
 const FilterWrapper = styled.View`
 	width: 100%;
-	height: ${(p) => p.theme.rem2px('6rem')};
+	height: ${(p) => p.theme.rem * HEIGHT};
 	border-radius: ${(p) => p.theme.rem2px('0.5rem')};
 	flex-direction: row;
 `;
@@ -105,7 +106,10 @@ const DashboardScreen = (): React.Element => {
 	return !filteredBets ? (
 		<HeaderScrollView loading={true} />
 	) : (
-		<HeaderScrollView renderHeaderContent={renderHeaderContent}>
+		<HeaderScrollView
+			renderHeaderContent={renderHeaderContent}
+			headerContentHeight={theme.rem * HEIGHT}
+		>
 			{filteredBets?.length ? (
 				filteredBets.map((bet) => {
 					return (
