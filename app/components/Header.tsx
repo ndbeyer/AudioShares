@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Label } from './Text';
 import Icon from './Icon';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
+import { useInternalNavState } from './NavigationProvider';
 
 const DEFAULT_HEADER_HEIGHT = 6;
 
@@ -63,10 +64,14 @@ const Header = ({
 	const navigation = useNavigation();
 	const theme = useTheme();
 	const navigationState = useNavigationState((state) => state);
+	const { tabRoute } = useInternalNavState();
 
 	const { top: topInsets } = useSafeAreaInsets();
 	const headerTotalHeight = DEFAULT_HEADER_HEIGHT * theme.rem + topInsets + headerContentHeight;
 	const headerBaseContentHeight = headerTotalHeight - headerContentHeight - topInsets;
+
+	const routeTitle =
+		navigationState.index === 0 ? tabRoute : navigationState.routeNames[navigationState.index];
 
 	const handleGoBack = React.useCallback(() => {
 		navigation.goBack();
@@ -78,7 +83,7 @@ const Header = ({
 				{navigationState.index > 0 ? (
 					<StyledIcon size="3.25rem" name="back" onPress={handleGoBack} />
 				) : null}
-				<Label size="xl">{navigationState.routeNames[navigationState.index]}</Label>
+				<Label size="xl">{routeTitle}</Label>
 			</HeaderBaseContent>
 			{renderHeaderContent ? renderHeaderContent() : null}
 		</HeaderWrapper>
