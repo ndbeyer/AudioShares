@@ -25,13 +25,13 @@ if (__DEV__) {
 const App = (): React.Element => {
 	return (
 		<SafeAreaProvider>
-			<NavigationProvider>
-				<ApolloProvider client={client}>
-					<ThemeProvider>
+			<ApolloProvider client={client}>
+				<ThemeProvider>
+					<NavigationProvider>
 						<Navigator />
-					</ThemeProvider>
-				</ApolloProvider>
-			</NavigationProvider>
+					</NavigationProvider>
+				</ThemeProvider>
+			</ApolloProvider>
 		</SafeAreaProvider>
 	);
 };
