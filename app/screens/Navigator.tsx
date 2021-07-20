@@ -1,13 +1,8 @@
-//@format
-//@flow
-
 import React from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-import { View, TouchableOpacity, Text } from 'react-native';
 
 import Loading from '../components/Loading';
 import TabBar from '../components/TabBar';
@@ -15,7 +10,7 @@ import InitializingScreen from './InitializingScreen';
 import LoginScreen from './LoginScreen';
 import DashboardView from './DashboardView';
 import PlaylistsView from './PlaylistsView';
-import PlaylistDetailView from './PlaylistDetailView';
+import ArtistsView from './ArtistsView';
 import ArtistDetailView from './ArtistDetailView';
 import TransactionsScreen from './TransactionsScreen';
 import SettingsScreen from './SettingsScreen';
@@ -35,7 +30,7 @@ const stackNavigatorConfig = [
 	},
 	{
 		name: 'Artists',
-		component: PlaylistDetailView,
+		component: ArtistsView,
 		options: defaultOptions,
 	},
 	{

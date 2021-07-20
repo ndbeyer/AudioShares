@@ -65,9 +65,11 @@ const GradientTitleImage = ({
 				resizeMode={heightFactor ? 'cover' : undefined}
 			/>
 			<StyledGradient />
-			<ArtistName size={textSize} textType={textType} margin="1rem 1.5rem" color="background0">
-				{label}
-			</ArtistName>
+			{label ? (
+				<ArtistName size={textSize} textType={textType} margin="1rem 1.5rem" color="background0">
+					{label}
+				</ArtistName>
+			) : null}
 		</ImageWrapper>
 	);
 };
