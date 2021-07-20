@@ -8,7 +8,6 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import Navigator from './screens/Navigator';
 import client from './util/client';
 import ThemeProvider from './components/ThemeProvider';
-import NavigationProvider from './components/NavigationProvider';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 if (__DEV__) {
@@ -27,9 +26,7 @@ const App = (): React.Element => {
 		<SafeAreaProvider>
 			<ApolloProvider client={client}>
 				<ThemeProvider>
-					<NavigationProvider>
-						<Navigator />
-					</NavigationProvider>
+					<Navigator />
 				</ThemeProvider>
 			</ApolloProvider>
 		</SafeAreaProvider>

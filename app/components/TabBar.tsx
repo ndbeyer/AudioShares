@@ -8,7 +8,6 @@ import styled, { useTheme } from 'styled-components';
 
 import { Paragraph } from './Text';
 import Icon from './Icon';
-import { useInternalNavState } from '../components/NavigationProvider';
 import { tabNavigatorConfig } from '../screens/Navigator';
 
 const DEFAULT_FOOTER_HEIGHT = 7;
@@ -55,17 +54,11 @@ export const useTabBarHeight = (
 const MyTabBar = ({ state, descriptors, navigation }): React.Element => {
 	console.log({ state });
 
-	const { tabRoute, setTabRoute } = useInternalNavState();
-
 	const theme = useTheme();
 	const { bottom: bottomInsets } = useSafeAreaInsets();
 	const footerHeight = DEFAULT_FOOTER_HEIGHT * theme.rem + bottomInsets;
 
 	const initialRouteRef = React.useRef(null);
-
-	React.useEffect(() => {
-		setTabRoute(initialRouteRef.current);
-	}, [setTabRoute]);
 
 	return (
 		<FooterWrapper height={footerHeight}>
