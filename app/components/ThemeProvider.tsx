@@ -17,15 +17,30 @@ const theme = {
 		zIndex: value,
 	}),
 	typo: { ...typoDefs() },
-	rem2px: (string) =>
-		string && typeof string === 'string'
-			? string.includes('%')
-				? string
-				: string
-						.split(' ')
-						.map((str) => Number(str.replace('rem', '')))
-						.reduce((a, b) => `${a} ${b * UNIT}px`, '')
-			: '0',
+	rem2px: (input: string, output: 'string' | 'number' = 'string') => {
+		if (input) {
+			if (typeof input === 'number') {
+				return input;
+			} else if (typeof input === 'string') {
+				if (input.includes('%')) {
+					return input;
+				} else if (input.includes('rem')) {
+					const numberArray = input.split(' ').map((str) => Number(str.replace('rem', '')));
+					return output === 'string'
+						? numberArray.reduce((a, b) => `${a} ${b * UNIT}px`, '')
+						: numberArray.length === 1
+						? numberArray[0] * UNIT
+						: numberArray.map((n) => n * UNIT);
+				} else {
+					return '0';
+				}
+			} else {
+				return '0';
+			}
+		} else {
+			return undefined;
+		}
+	},
 	rem24sidesPx: (string: string, type: 'pxString' | 'pxArray' = 'pxString') => {
 		const array = [];
 		string.split(' ').forEach((str) => array.push(Number(str.replace('rem', ''))));

@@ -8,9 +8,9 @@ import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components';
 
 import HeaderScrollView from '../components/HeaderScrollView';
-import Loading from '../components/Loading';
-import Image from '../components/Image';
+import GradientTitleImage from '../components/GradientTitleImage';
 import CardWrapper from '../components/CardWrapper';
+import Image from '../components/Image';
 import { Paragraph } from '../components/Text';
 
 const Row = styled.View`
@@ -48,6 +48,19 @@ export const Card = ({
 	);
 };
 
+// const Image = styled(GradientTitleImage)`
+// 	border-radius: ${(p) => p.theme.rem}px;
+// `;
+
+// const CardWrapper = styled.View`
+// 	flex-direction: row;
+// 	justify-content: space-between;
+// 	align-items: center;
+// 	background-color: ${(p) => p.theme.colors.background0};
+// 	overflow: hidden;
+// 	border-radius: ${(p) => p.theme.rem2px('1rem')};
+// `;
+
 const PlaylistsView = (): React.Element => {
 	const navigation = useNavigation();
 
@@ -76,6 +89,9 @@ const PlaylistsView = (): React.Element => {
 		<HeaderScrollView>
 			{data?.playlists?.map(({ id, name, image }) => (
 				// TODO: update style
+				// <CardWrapper>
+				// 	<Image image={image} label={name} width="18rem" textType="label" />
+				// </CardWrapper>
 				<Card key={id} id={id} name={name} image={image} onPress={() => handlePress(id)} />
 			))}
 		</HeaderScrollView>

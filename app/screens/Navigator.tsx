@@ -13,7 +13,7 @@ import Loading from '../components/Loading';
 import TabBar from '../components/TabBar';
 import InitializingScreen from './InitializingScreen';
 import LoginScreen from './LoginScreen';
-import DashboardScreen from './DashboardScreen';
+import DashboardView from './DashboardView';
 import PlaylistsView from './PlaylistsView';
 import PlaylistDetailView from './PlaylistDetailView';
 import ArtistDetailView from './ArtistDetailView';
@@ -50,7 +50,7 @@ const stackNavigatorConfig = [
 	},
 	{
 		name: 'Dashboard',
-		component: DashboardScreen,
+		component: DashboardView,
 		options: defaultOptions,
 	},
 	{

@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import HeaderScrollView from '../components/HeaderScrollView';
 import Button from '../components/Button';
 import ArtistStatsRow from '../components/ArtistStatsRow';
-import ArtistImage from '../components/ArtistImage';
+import GradientTitleImage from '../components/GradientTitleImage';
 import Graph from '../components/Graph';
 import CreateBetView from '../components/CreateBetView';
 import JoinBetView from '../components/JoinBetView';
@@ -61,7 +61,7 @@ const ArtistDetailView = ({
 		<HeaderScrollView loading={true} />
 	) : (
 		<HeaderScrollView>
-			<ArtistImage artist={artist} />
+			<GradientTitleImage image={artist.image} label={artist.name} />
 			<ArtistStatsRow
 				monthlyListeners={artist.monthlyListeners}
 				followers={artist.followers}

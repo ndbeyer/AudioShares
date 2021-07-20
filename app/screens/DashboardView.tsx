@@ -11,12 +11,12 @@ import HeaderScrollView from '../components/HeaderScrollView';
 import EmptyCard from '../components/EmptyCard';
 import { Paragraph } from '../components/Text';
 import BetStats from '../components/BetStats';
-import ArtistImage from '../components/ArtistImage';
+import GradientTitleImage from '../components/GradientTitleImage';
 
 import { BetInfoFragment } from '../state/bet';
 import { ArtistInfoFragment } from '../state/artist';
 
-const Image = styled(ArtistImage)`
+const Image = styled(GradientTitleImage)`
 	border-radius: ${(p) => p.theme.rem}px;
 `;
 
@@ -54,7 +54,7 @@ const ShadowWrapper = styled.View`
 	border-radius: ${(p) => p.theme.rem2px('1rem')};
 `;
 
-const DashboardScreen = (): React.Element => {
+const DashboardView = (): React.Element => {
 	const theme = useTheme();
 
 	const { data } = useQuery(
@@ -115,7 +115,12 @@ const DashboardScreen = (): React.Element => {
 					return (
 						<ShadowWrapper key={bet.id} style={shadowProps}>
 							<CardWrapper>
-								<Image artist={bet.artist} width={theme.rem * 18} textType="label" />
+								<Image
+									image={bet.artist.image}
+									label={bet.artist.name}
+									width={theme.rem * 18}
+									textType="label"
+								/>
 								<BetStats
 									{...bet}
 									{...(selected === 'JOINABLE'
@@ -157,4 +162,4 @@ const DashboardScreen = (): React.Element => {
 	);
 };
 
-export default DashboardScreen;
+export default DashboardView;

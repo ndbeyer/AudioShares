@@ -1,11 +1,10 @@
 import React from 'react';
 import { useWindowDimensions } from 'react-native';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import Image from './Image';
 import Gradient from './Gradient';
 import { Heading, Label, Paragraph } from './Text';
-import { ArtistType } from 'app/state/artist';
 
 const ArtistName = styled((props) =>
 	props.textType === 'heading' ? (
@@ -33,24 +32,28 @@ const StyledGradient = styled(Gradient).attrs((p) => ({
 	colors: [p.theme.colors.background0, p.theme.colors.background0, p.theme.colors.neutral2],
 }))``;
 
-const ArtistImage = ({
-	artist,
+const GradientTitleImage = ({
+	image,
+	label,
 	heightFactor = 1,
 	width,
 	textSize = 'l',
 	textType = 'heading',
 	borderRadius = 0,
 }: {
-	artist: ArtistType;
+	image: string;
+	label: string;
 	heightFactor?: number;
-	width?: number;
+	width?: number | string;
 	textSize?: string;
 	textType?: 'heading' | 'label' | 'paragraph';
 	borderRadius?: number;
 }): React.Element => {
 	const { width: windowWidth } = useWindowDimensions();
 
-	width = width || windowWidth;
+	const theme = useTheme();
+
+	width = theme.rem2px(width, 'number') || windowWidth;
 	const height = (width as number) * heightFactor;
 
 	return (
@@ -58,15 +61,15 @@ const ArtistImage = ({
 			<Image
 				width="100%"
 				height="100%"
-				source={artist.image}
+				source={image}
 				resizeMode={heightFactor ? 'cover' : undefined}
 			/>
 			<StyledGradient />
 			<ArtistName size={textSize} textType={textType} margin="1rem 1.5rem" color="background0">
-				{artist.name}
+				{label}
 			</ArtistName>
 		</ImageWrapper>
 	);
 };
 
-export default ArtistImage;
+export default GradientTitleImage;

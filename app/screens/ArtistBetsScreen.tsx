@@ -5,7 +5,7 @@ import Button from '../components/Button';
 import CardWrapper from '../components/CardWrapper';
 import Loading from '../components/Loading';
 import BetStats from '../components/BetStats';
-import ArtistImage from '../components/ArtistImage';
+import GradientTitleImage from '../components/GradientTitleImage';
 import JoinBetView from '../components/JoinBetView';
 import { RouteProp } from '@react-navigation/native';
 
@@ -24,7 +24,7 @@ const ArtistBetsScreen = ({
 	console.log({ artistId, artist });
 
 	const renderHeaderContent = React.useCallback(() => {
-		return <ArtistImage artist={artist!} heightFactor={0.2} />;
+		return <GradientTitleImage image={artist!.image!} label={artist!.name} heightFactor={0.2} />;
 	}, [artist]);
 
 	const handleOpenBet = React.useCallback(

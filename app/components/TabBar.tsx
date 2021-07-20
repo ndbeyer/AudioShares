@@ -52,8 +52,6 @@ export const useTabBarHeight = (
 };
 
 const MyTabBar = ({ state, descriptors, navigation }): React.Element => {
-	console.log({ state });
-
 	const theme = useTheme();
 	const { bottom: bottomInsets } = useSafeAreaInsets();
 	const footerHeight = DEFAULT_FOOTER_HEIGHT * theme.rem + bottomInsets;
