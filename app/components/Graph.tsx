@@ -1,6 +1,3 @@
-//@format
-//@flow
-
 import React from 'react';
 import { useWindowDimensions } from 'react-native';
 import styled, { useTheme } from 'styled-components';
@@ -11,7 +8,7 @@ import { Paragraph } from './Text';
 import { getSuffix, correctNumberForSuffix } from '../util/suffix';
 import interpolate from '../util/interpolate';
 
-const Wrapper = styled.View`
+const EmptyWrapper = styled.View`
 	margin: ${(p) => p.theme.rem2px(p.mar)};
 	border: 1px solid ${(p) => p.theme.colors.neutral4};
 	border-radius: ${(p) => 0.25 * p.theme.rem}px;
@@ -22,9 +19,16 @@ const Wrapper = styled.View`
 	align-items: center;
 `;
 
+const Wrapper = styled.View`
+	padding: ${(p) => p.theme.rem2px('1rem 0rem')};
+	width: 100%;
+	background-color: ${(p) => p.theme.colors.background0};
+	align-items: center;
+`;
+
 const Graph = ({
 	data = [],
-	margin = '2rem 2rem',
+	margin = '2rem 0rem',
 	pxHeight = 220,
 }: {
 	data: { id: string; dateTime: string; monthlyListeners: number }[];
@@ -59,11 +63,11 @@ const Graph = ({
 	}, [interpolatedData, suffix]);
 
 	return !interpolatedData ? (
-		<Wrapper mar={margin}>
+		<EmptyWrapper mar={margin}>
 			<Paragraph color="neutral3">No history data available</Paragraph>
-		</Wrapper>
+		</EmptyWrapper>
 	) : (
-		<>
+		<Wrapper>
 			<LineChart
 				// eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
 				data={{
@@ -103,8 +107,8 @@ const Graph = ({
 					marginBottom: pxMarginBottom,
 				}}
 			/>
-			<Paragraph margin="-2rem 0 0 0">Weeks</Paragraph>
-		</>
+			<Paragraph margin="-2rem 0 1rem 0">Weeks</Paragraph>
+		</Wrapper>
 	);
 };
 
