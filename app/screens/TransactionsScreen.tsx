@@ -2,7 +2,7 @@
 //@flow
 
 import React from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { format } from 'date-fns';
 
 import HeaderScrollView from '../components/HeaderScrollView';
@@ -42,10 +42,12 @@ const TransactionCard = ({
 	);
 };
 
+const HEADER_HEIGHT = 6;
+
 const HeaderWrapper = styled.View`
 	width: 100%;
-	height: ${(p) => p.theme.rem2px('6rem')};
-	background-color: ${(p) => p.theme.colors.background1};
+	height: ${(p) => p.theme.rem * HEADER_HEIGHT}px;
+
 	justify-content: center;
 	align-items: center;
 `;
@@ -53,6 +55,7 @@ const HeaderWrapper = styled.View`
 const TransactionsScreen = (): React.Element => {
 	const transactions = useTransactions();
 	const { currentUser } = useUser();
+	const theme = useTheme();
 
 	const MoneyHeader = React.useCallback(() => {
 		return (
@@ -65,7 +68,11 @@ const TransactionsScreen = (): React.Element => {
 	return !transactions ? (
 		<HeaderScrollView loading={true} />
 	) : (
-		<HeaderScrollView loading={!transactions} renderHeaderContent={MoneyHeader}>
+		<HeaderScrollView
+			loading={!transactions}
+			renderHeaderContent={MoneyHeader}
+			headerContentHeight={6 * theme.rem}
+		>
 			{transactions?.length ? (
 				transactions.map((transaction) => {
 					return <TransactionCard key={transaction.id} {...transaction} />;

@@ -18,7 +18,7 @@ const theme = {
 	}),
 	typo: { ...typoDefs() },
 	rem2px: (string) =>
-		string
+		string && typeof string === 'string'
 			? string.includes('%')
 				? string
 				: string
