@@ -79,7 +79,6 @@ const MyTabBar = ({ state, descriptors, navigation }): React.Element => {
 						});
 
 						if (!isFocused && !event.defaultPrevented) {
-							setTabRoute(route.name);
 							navigation.navigate(route.name);
 						}
 					};
