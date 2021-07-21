@@ -7,7 +7,7 @@ const Wrapper = styled.TouchableOpacity``;
 
 const Icon = ({
 	id,
-	color = 'accent0',
+	color = 'neutral1',
 	outline,
 	size = '2rem',
 	strokeWidth = 1,
@@ -22,7 +22,7 @@ const Icon = ({
 	strokeWidth?: number;
 	name: string;
 	onPress?: (id?: string) => void;
-	style: { [keys: string]: string | number };
+	style?: { [keys: string]: string | number };
 }): React.Element => {
 	const theme = useTheme();
 	const pixelSize = theme.rem2px(size);

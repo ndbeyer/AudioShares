@@ -163,12 +163,12 @@ const Quote = ({
 			height={barRightValue > barLeftValue ? nBarHeightMax + 'rem' : nBarHeightMax / 2 + 'rem'}
 		>
 			<TextPositioner top={-2 * theme.rem}>
-				<Paragraph size="s" color="neutral3">
+				<Paragraph size="s" color="neutral1">
 					{type === 'HIGHER'
 						? getNumberWithSuffix(supportersAmount)
 						: getNumberWithSuffix(contradictorsAmount)}
 				</Paragraph>
-				<Paragraph size="s" color={highlight ? (userWins ? 'accent0' : 'error') : 'neutral3'}>
+				<Paragraph size="s" color={highlight ? (userWins ? 'accent0' : 'error') : 'neutral1'}>
 					{(type === 'LOWER' && !currentUserSupports) || (type === 'HIGHER' && currentUserSupports)
 						? ` (${Number(currentUserAmount)})`
 						: null}
@@ -176,19 +176,19 @@ const Quote = ({
 			</TextPositioner>
 			<Line mar="0rem 1rem" />
 			<TextPositioner>
-				<Paragraph size="s" color="neutral3">
+				<Paragraph size="s" color="neutral1">
 					{type === 'LOWER'
 						? getNumberWithSuffix(supportersAmount)
 						: getNumberWithSuffix(contradictorsAmount)}
 				</Paragraph>
-				<Paragraph size="s" color={highlight ? (userWins ? 'accent0' : 'error') : 'neutral3'}>
+				<Paragraph size="s" color={highlight ? (userWins ? 'accent0' : 'error') : 'neutral1'}>
 					{(type === 'LOWER' && currentUserSupports) || (type === 'HIGHER' && !currentUserSupports)
 						? ` (${Number(currentUserAmount)})`
 						: null}
 				</Paragraph>
 			</TextPositioner>
 			{isNaN(supportersAmount / (contradictorsAmount + supportersAmount)) ? null : (
-				<Paragraph size="s" color="neutral3">
+				<Paragraph size="s" color="neutral1">
 					{(supportersAmount / (contradictorsAmount + supportersAmount)).toFixed(2)}
 				</Paragraph>
 			)}
@@ -208,20 +208,20 @@ const XAxis = ({ dateLeft, dateRight }) => {
 		<>
 			<Line mar="0rem" />
 			{dateLeft === 'now' && dateRight ? (
-				<Paragraph margin="0rem 0 0.5rem" size="s" color="neutral3">
+				<Paragraph margin="0rem 0 0.5rem" size="s" color="neutral1">
 					{formatDistanceToNow(new Date(dateRight))}
 				</Paragraph>
 			) : dateLeft && dateRight ? (
 				<Row>
-					<Paragraph margin="0.5rem" size="s" color="neutral3">
+					<Paragraph margin="0.5rem" size="s" color="neutral1">
 						{format(new Date(dateLeft), 'yyyy-MM-dd')}
 					</Paragraph>
-					<Paragraph margin="0.5rem" size="s" color="neutral3">
+					<Paragraph margin="0.5rem" size="s" color="neutral1">
 						{format(new Date(dateRight), 'yyyy-MM-dd')}
 					</Paragraph>
 				</Row>
 			) : !dateLeft && dateRight ? (
-				<Paragraph margin="0.5rem" size="s" color="neutral3">
+				<Paragraph margin="0.5rem" size="s" color="neutral1">
 					{format(new Date(dateRight), 'yyyy-MM-dd')}
 				</Paragraph>
 			) : null}

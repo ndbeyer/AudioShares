@@ -1,13 +1,14 @@
 import React from 'react';
 import { ThemeProvider as SNThemeProvider } from 'styled-components';
 import { times } from 'lodash';
-import { UNIT, colorDefs, typoDefs, pathDefs } from '../util/theme';
+import { UNIT, typoDefs, pathDefs } from '../util/theme';
+import createColorScheme from '../util/createColorScheme';
 import PortalProvider from './PortalProvider';
 
 const theme = {
 	rem: UNIT,
 	iconPaths: pathDefs(),
-	colors: colorDefs({ accentColor: 'darkblue', chromaticity: 5 }),
+	colors: createColorScheme({ accentColor: '#7FFFD4', darkMode: false, tintStrength: 3 }),
 	elevation: (value) => ({
 		shadowColor: 'black',
 		shadowOffset: { width: 0, height: value },

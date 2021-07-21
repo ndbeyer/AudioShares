@@ -86,10 +86,10 @@ const MyTabBar = ({ state, descriptors, navigation }): React.Element => {
 							<Icon
 								size="3.25rem"
 								name={iconName}
-								color={isFocused ? 'accent0' : 'neutral3'}
+								color={isFocused ? 'neutral0' : 'neutral3'}
 								onPress={handlePress}
 							/>
-							<Paragraph size="s" margin="0.5rem 0 0 0" color={isFocused ? 'accent0' : 'neutral3'}>
+							<Paragraph size="s" margin="0.5rem 0 0 0" color={isFocused ? 'neutral0' : 'neutral3'}>
 								{label}
 							</Paragraph>
 						</TabIconWrapper>

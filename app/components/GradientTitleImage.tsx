@@ -66,7 +66,7 @@ const GradientTitleImage = ({
 			/>
 			<StyledGradient />
 			{label ? (
-				<ArtistName size={textSize} textType={textType} margin="1rem 1.5rem" color="background0">
+				<ArtistName size={textSize} textType={textType} margin="1rem 1.5rem" color="overlayText">
 					{label}
 				</ArtistName>
 			) : null}
