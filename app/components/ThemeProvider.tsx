@@ -1,4 +1,5 @@
 import React from 'react';
+import { StatusBar } from 'react-native';
 import { ThemeProvider as SNThemeProvider } from 'styled-components';
 import { times } from 'lodash';
 import { UNIT, typoDefs, pathDefs } from '../util/theme';
@@ -77,6 +78,7 @@ const ThemeProvider = ({ children }: { children?: React.Element }): React.Elemen
 
 	return (
 		<SNThemeProvider theme={theme}>
+			<StatusBar barStyle={!darkMode ? 'dark-content' : 'light-content'} />
 			<PortalProvider>{children}</PortalProvider>
 		</SNThemeProvider>
 	);
