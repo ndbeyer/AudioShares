@@ -229,7 +229,7 @@ const XAxis = ({ dateLeft, dateRight }) => {
 	);
 };
 
-const BetStats = ({
+const BetVisualizer = ({
 	barLeftValue,
 	barRightValue,
 	dateLeft,
@@ -309,4 +309,4 @@ const BetStats = ({
 	);
 };
 
-export default BetStats;
+export default BetVisualizer;

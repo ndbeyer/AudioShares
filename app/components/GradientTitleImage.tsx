@@ -1,5 +1,5 @@
 import React from 'react';
-import { useWindowDimensions } from 'react-native';
+import { useWindowDimensions, TouchableOpacity, View } from 'react-native';
 import styled, { useTheme } from 'styled-components';
 
 import Image from './Image';
@@ -20,7 +20,9 @@ const ArtistName = styled((props) =>
 	left: 0;
 `;
 
-const ImageWrapper = styled.View`
+const ImageWrapper = styled((props) =>
+	!props.pressable ? <View {...props} /> : <TouchableOpacity {...props} />
+)`
 	height: ${(p) => p.height}px;
 	width: ${(p) => p.width}px;
 	border-radius: ${(p) => p.borderRadius}px;
@@ -33,6 +35,7 @@ const StyledGradient = styled(Gradient).attrs((p) => ({
 }))``;
 
 const GradientTitleImage = ({
+	id,
 	image,
 	label,
 	heightFactor = 1,
@@ -40,7 +43,9 @@ const GradientTitleImage = ({
 	textSize = 'l',
 	textType = 'heading',
 	borderRadius = 0,
+	onPress,
 }: {
+	id?: string;
 	image: string;
 	label: string;
 	heightFactor?: number;
@@ -48,6 +53,7 @@ const GradientTitleImage = ({
 	textSize?: string;
 	textType?: 'heading' | 'label' | 'paragraph';
 	borderRadius?: number;
+	onPress: (id?: string) => void;
 }): React.Element => {
 	const { width: windowWidth } = useWindowDimensions();
 
@@ -56,8 +62,18 @@ const GradientTitleImage = ({
 	width = theme.rem2px(width, 'number') || windowWidth;
 	const height = (width as number) * heightFactor;
 
+	const handlePress = React.useCallback(() => {
+		onPress && onPress(id);
+	}, [id, onPress]);
+
 	return (
-		<ImageWrapper width={width} height={height} borderRadius={borderRadius}>
+		<ImageWrapper
+			width={width}
+			height={height}
+			borderRadius={borderRadius}
+			pressable={onPress}
+			onPress={handlePress}
+		>
 			<Image
 				width="100%"
 				height="100%"

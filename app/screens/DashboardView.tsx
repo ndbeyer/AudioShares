@@ -6,11 +6,12 @@ import { TouchableOpacity } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import styled, { useTheme } from 'styled-components';
+import { useNavigation } from '@react-navigation/native';
 
 import HeaderScrollView from '../components/HeaderScrollView';
 import EmptyCard from '../components/EmptyCard';
 import { Paragraph } from '../components/Text';
-import BetStats from '../components/BetStats';
+import BetVisualizer from '../components/BetVisualizer';
 import GradientTitleImage from '../components/GradientTitleImage';
 
 import { BetInfoFragment } from '../state/bet';
@@ -56,6 +57,7 @@ const ShadowWrapper = styled.View`
 
 const DashboardView = (): React.Element => {
 	const theme = useTheme();
+	const navigation = useNavigation();
 
 	const { data } = useQuery(
 		gql`
@@ -103,6 +105,10 @@ const DashboardView = (): React.Element => {
 
 	const shadowProps = React.useMemo(() => theme.elevation(1), [theme]);
 
+	const handlePressImage = React.useCallback((id) => {
+		navigation.navigate('Artist', { artistId: id });
+	}, []);
+
 	return !filteredBets ? (
 		<HeaderScrollView loading={true} />
 	) : (
@@ -120,8 +126,10 @@ const DashboardView = (): React.Element => {
 									label={bet.artist.name}
 									width={theme.rem * 18}
 									textType="label"
+									id={bet.artist.id}
+									onPress={handlePressImage}
 								/>
-								<BetStats
+								<BetVisualizer
 									{...bet}
 									{...(selected === 'JOINABLE'
 										? {

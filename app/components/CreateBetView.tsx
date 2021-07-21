@@ -5,7 +5,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Button from './Button';
-import BetStats from './BetStats';
+import BetVisualizer from './BetVisualizer';
 import DateSlider from './DateSlider';
 import ListenersSlider from './ListenersSlider';
 import { Paragraph } from './Text';
@@ -97,7 +97,7 @@ const CreateBetView = ({
 	return !betId ? (
 		<>
 			{artist.monthlyListeners === state.monthlyListeners ? null : (
-				<BetStats
+				<BetVisualizer
 					barLeftValue={artist.monthlyListeners}
 					barRightValue={state.monthlyListeners}
 					dateLeft="now"

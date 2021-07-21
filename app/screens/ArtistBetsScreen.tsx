@@ -4,7 +4,7 @@ import HeaderScrollView from '../components/HeaderScrollView';
 import Button from '../components/Button';
 import CardWrapper from '../components/CardWrapper';
 import Loading from '../components/Loading';
-import BetStats from '../components/BetStats';
+import BetVisualizer from '../components/BetVisualizer';
 import GradientTitleImage from '../components/GradientTitleImage';
 import JoinBetView from '../components/JoinBetView';
 import { RouteProp } from '@react-navigation/native';
@@ -42,7 +42,7 @@ const ArtistBetsScreen = ({
 		<HeaderScrollView renderHeaderContent={renderHeaderContent}>
 			{artist.joinableBets?.map((bet) => (
 				<CardWrapper key={bet.id}>
-					<BetStats
+					<BetVisualizer
 						{...bet}
 						barLeftValue={artist?.monthlyListeners}
 						barRightValue={bet.listeners}

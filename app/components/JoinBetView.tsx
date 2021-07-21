@@ -9,7 +9,7 @@ import Button from './Button';
 import AmountSlider from './AmountSlider';
 import Loading from './Loading';
 import { Label, Paragraph } from './Text';
-import BetStats from './BetStats';
+import BetVisualizer from './BetVisualizer';
 import { useBet, joinBet } from '../state/bet';
 import { useUser } from '../state/user';
 import delay from '../util/delay';
@@ -117,7 +117,7 @@ const JoinBetView = ({
 		<Loading />
 	) : !joinedBet ? (
 		<>
-			<BetStats
+			<BetVisualizer
 				{...bet}
 				barLeftValue={bet.artist?.monthlyListeners}
 				barRightValue={bet.listeners}
