@@ -61,7 +61,7 @@ const LoginScreen = (): React.Element => {
 		<StyledScreen>
 			{!clicked ? (
 				<>
-					<Heading size="xl">SpotiBet</Heading>
+					<Heading size="xl">AudioShares</Heading>
 					<Label size="m" uppercase margin="0 0 4rem">
 						Good taste, good money
 					</Label>
@@ -71,7 +71,7 @@ const LoginScreen = (): React.Element => {
 				<Loading />
 			) : (
 				<>
-					<Heading size="xl">SpotiBet</Heading>
+					<Heading size="xl">AudioShares</Heading>
 					<Paragraph align="center" margin="1rem 4rem 1.5rem" size="m" uppercase>
 						To use this app, it is necessary that you login with your spotify account. You will be
 						asked to enter your spotify credentials in the next step.
