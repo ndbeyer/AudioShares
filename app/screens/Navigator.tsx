@@ -13,7 +13,7 @@ import PlaylistsView from './PlaylistsView';
 import ArtistsView from './ArtistsView';
 import ArtistDetailView from './ArtistDetailView';
 import TransactionsScreen from './TransactionsScreen';
-import SettingsScreen from './SettingsScreen';
+import SettingsView from './SettingsView';
 import ArtistBetsScreen from './ArtistBetsScreen';
 
 import { useUser, fetchUser } from '../state/user';
@@ -55,7 +55,7 @@ const stackNavigatorConfig = [
 	},
 	{
 		name: 'Settings',
-		component: SettingsScreen,
+		component: SettingsView,
 		options: defaultOptions,
 	},
 ];
