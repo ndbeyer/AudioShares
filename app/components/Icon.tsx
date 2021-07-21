@@ -3,7 +3,10 @@ import * as React from 'react';
 import styled, { useTheme } from 'styled-components';
 import Svg, { Path } from 'react-native-svg';
 
-const Wrapper = styled.TouchableOpacity``;
+const Wrapper = styled.TouchableOpacity`
+	justify-content: center;
+	align-items: center;
+`;
 
 const Icon = ({
 	id,

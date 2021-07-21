@@ -26,7 +26,7 @@ const HEIGHT = 6;
 
 const FilterWrapper = styled.View`
 	width: 100%;
-	height: ${(p) => p.theme.rem * HEIGHT};
+	height: ${(p) => p.theme.rem * HEIGHT}px;
 	border-radius: ${(p) => p.theme.rem2px('0.5rem')};
 	flex-direction: row;
 `;
