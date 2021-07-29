@@ -25,6 +25,13 @@ const StyledScrollView = styled.ScrollView.attrs({
 	height: ${(p) => p.height}px;
 `;
 
+const StyledFlatList = styled.FlatList.attrs<{ height: number }>({
+	showsVerticalScrollIndicator: false,
+})`
+	flex: 1;
+	height: ${(p) => p.height}px;
+`;
+
 const HeaderScrollView = ({
 	renderHeaderContent,
 	headerContentHeight = 0,
@@ -32,6 +39,8 @@ const HeaderScrollView = ({
 	loading,
 	style,
 	verticalPadding = 1,
+	data,
+	renderItem,
 }: {
 	renderHeaderContent?: () => ReactNode;
 	headerContentHeight?: number;
@@ -39,6 +48,8 @@ const HeaderScrollView = ({
 	loading?: boolean;
 	style?: { [key: string]: string | number };
 	verticalPadding?: number;
+	data?: { [key: string]: string | number }[];
+	renderItem?: () => React.Element;
 }): React.Element => {
 	const theme = useTheme();
 
@@ -50,24 +61,43 @@ const HeaderScrollView = ({
 
 	const contentContainerStyle = React.useMemo(
 		() => ({
-			alignItems: 'center',
-			width: '100%',
+			alignItems: data ? 'stretch' : 'center',
+			justifyContent: data ? 'flex-start' : null,
+			width: data ? null : '100%',
 			paddingTop: headerHeight + theme.rem * verticalPadding + headerContentHeight,
 			paddingBottom: tabBarHeight + theme.rem * verticalPadding,
 			// borderStyle: 'solid',
 			// borderColor: 'green',
 			// borderWidth: 3,
 		}),
-		[headerHeight, theme.rem, verticalPadding, headerContentHeight, tabBarHeight]
+		[data, headerHeight, theme.rem, verticalPadding, headerContentHeight, tabBarHeight]
 	);
+
+	const keyExtractor = React.useCallback((item) => item.id, []);
 
 	return (
 		<>
 			<Screen height={screenHeight}>
 				<Background height={screenHeight} />
-				<StyledScrollView contentContainerStyle={contentContainerStyle} height={screenHeight}>
-					{loading ? <Loading height={contentHeight} /> : children}
-				</StyledScrollView>
+
+				{loading ? (
+					<StyledScrollView contentContainerStyle={contentContainerStyle} height={screenHeight}>
+						<Loading height={contentHeight} />
+					</StyledScrollView>
+				) : data && renderItem ? (
+					<StyledFlatList
+						data={data}
+						renderItem={renderItem}
+						keyExtractor={keyExtractor}
+						height={screenHeight}
+						contentContainerStyle={contentContainerStyle}
+					/>
+				) : (
+					<StyledScrollView contentContainerStyle={contentContainerStyle} height={screenHeight}>
+						{children}
+					</StyledScrollView>
+				)}
+
 				<Header
 					renderHeaderContent={renderHeaderContent}
 					headerContentHeight={headerContentHeight}

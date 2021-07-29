@@ -62,7 +62,6 @@ const CardWrapper = styled.TouchableOpacity`
 
 const ShadowWrapper = styled.View`
 	margin: ${(p) => p.theme.rem2px('1rem')};
-	align-self: stretch;
 	border-radius: ${(p) => p.theme.rem2px('1rem')};
 `;
 
@@ -91,21 +90,24 @@ const PlaylistsView = (): React.Element => {
 		[navigation]
 	);
 
+	const renderItem = React.useCallback(
+		({ item: { id, name, image } }) => (
+			<ShadowWrapper key={id} style={shadowProps}>
+				<CardWrapper onPress={() => handlePress(id)}>
+					<Image image={image} width="18rem" textType="label" />
+					<Label flex align="center">
+						{name}
+					</Label>
+				</CardWrapper>
+			</ShadowWrapper>
+		),
+		[handlePress, shadowProps]
+	);
+
 	return !data ? (
 		<HeaderScrollView loading={true} />
 	) : (
-		<HeaderScrollView>
-			{data?.playlists?.map(({ id, name, image }) => (
-				<ShadowWrapper key={id} style={shadowProps}>
-					<CardWrapper onPress={() => handlePress(id)}>
-						<Image image={image} width="18rem" textType="label" />
-						<Label flex align="center">
-							{name}
-						</Label>
-					</CardWrapper>
-				</ShadowWrapper>
-			))}
-		</HeaderScrollView>
+		<HeaderScrollView data={data?.playlists} renderItem={renderItem} />
 	);
 };
 
