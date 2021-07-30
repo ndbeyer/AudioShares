@@ -4,7 +4,8 @@ import { ThemeProvider as SNThemeProvider } from 'styled-components';
 import { times } from 'lodash';
 import { UNIT, typoDefs, pathDefs } from '../util/theme';
 import createColorScheme from '../util/createColorScheme';
-import PortalProvider from './PortalProvider';
+import PortalProvider from './PortalProvider'; // TODO: remove later
+import PortalProvider2 from './PortalProvider2';
 
 const rem2px = (input: string, output: 'string' | 'number' = 'string') => {
 	if (input) {
@@ -79,7 +80,9 @@ const ThemeProvider = ({ children }: { children?: React.Element }): React.Elemen
 	return (
 		<SNThemeProvider theme={theme}>
 			<StatusBar barStyle={!darkMode ? 'dark-content' : 'light-content'} />
-			<PortalProvider>{children}</PortalProvider>
+			<PortalProvider>
+				<PortalProvider2>{children}</PortalProvider2>
+			</PortalProvider>
 		</SNThemeProvider>
 	);
 };
