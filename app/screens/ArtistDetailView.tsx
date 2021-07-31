@@ -12,9 +12,8 @@ import GradientTitleImage from '../components/GradientTitleImage';
 import Graph from '../components/Graph';
 import CreateBetView from '../components/CreateBetView';
 import JoinBetView from '../components/JoinBetView';
-
+import PortalProvider2 from '../components/PortalProvider2';
 import { useArtist } from '../state/artist';
-import { usePortal } from '../components/PortalProvider';
 
 const Row = styled.View`
 	flex-direction: row;
@@ -22,6 +21,42 @@ const Row = styled.View`
 	justify-content: center;
 	align-items: center;
 `;
+
+const Wrapper = styled.View`
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	justify-content: center;
+	align-items: center;
+`;
+
+const OpacityOverlay = styled.TouchableOpacity`
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	background-color: ${(p) => p.theme.colors.neutral1};
+	opacity: 0.5;
+	border: 5px solid yellow;
+	justify-content: center;
+	align-items: center;
+`;
+
+const ContentWrapper = styled.View`
+	position: absolute;
+	width: 80%;
+	background-color: ${(p) => p.theme.colors.background0};
+	border-radius: ${(p) => p.theme.rem2px('2rem')};
+	padding: ${(p) => p.theme.rem2px(p.pad)};
+`;
+
+const ModalComponent = ({ dismissPortal, type, ...props }) => (
+	<Wrapper>
+		<OpacityOverlay onPress={dismissPortal} />
+		<ContentWrapper pad="1.5rem">
+			{type === 'create' ? <CreateBetView {...props} /> : <JoinBetView {...props} />}
+		</ContentWrapper>
+	</Wrapper>
+);
 
 const ArtistDetailView = ({
 	route,
@@ -31,27 +66,26 @@ const ArtistDetailView = ({
 	const navigation = useNavigation();
 	const { artistId } = route.params;
 	const artist = useArtist(artistId);
-	const { renderPortal, closePortal } = usePortal();
 
 	const handleJoinBet = React.useCallback(
 		(betId) => {
-			renderPortal(
-				<JoinBetView betId={betId} closePortal={closePortal} renderPortal={renderPortal} />
-			);
+			PortalProvider2.render('joinBetModal', ModalComponent, {
+				artist,
+				onCreatedBet: handleJoinBet,
+				type: 'join',
+				betId,
+			});
 		},
-		[closePortal, renderPortal]
+		[artist]
 	);
 
 	const handleCreateNewBet = React.useCallback(() => {
-		renderPortal(
-			<CreateBetView
-				artist={artist!}
-				closePortal={closePortal}
-				renderPortal={renderPortal}
-				onCreatedBet={handleJoinBet}
-			/>
-		);
-	}, [artist, closePortal, handleJoinBet, renderPortal]);
+		PortalProvider2.render('createBetModal', ModalComponent, {
+			artist,
+			onCreatedBet: handleJoinBet,
+			type: 'create',
+		});
+	}, [artist, handleJoinBet]);
 
 	const handleOpenArtistBets = React.useCallback(() => {
 		navigation.navigate('ArtistBetsScreen', { artistId: artist?.id });

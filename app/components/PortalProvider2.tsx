@@ -1,59 +1,38 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-// const PortalWrapper = styled.View.attrs({
-// 	pointerEvents: 'box-none',
-// })`
-// 	position: absolute;
-// 	width: 100%;
-// 	height: 100%;
-// `;
+const PortalWrapper = styled.View.attrs({
+	pointerEvents: 'box-none',
+})`
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border: 10px solid green;
+`;
 
-// const PortalContent = React.memo(
-// 	({
-// 		id,
-// 		componentName,
-// 		portalLayout,
-// 		animationConfig,
-// 		onRegisterTransitionOut,
-// 		...props
-// 	}: {
-// 		id: string;
-// 		componentName: string;
-// 		portalLayout?: any;
-// 		animationConfig?: [AnimationConfig | undefined, AnimationConfig | undefined];
-// 		onRegisterTransitionOut: (
-// 			id: string,
-// 			transitionOut: (onTransionFinished: () => void) => void
-// 		) => void;
-// 	} & unknown) => {
-// 		const transition = React.useRef(new Animated.Value(0));
-// 		React.useLayoutEffect(() => {
-// 			const inConfig = animationConfig?.[0] || { type: 'spring' };
-// 			animateValue(transition.current, 1, inConfig)();
-// 			onRegisterTransitionOut(id, (onTransionFinished) => {
-// 				const outConfig = animationConfig?.[1] || { type: 'easeOut', duration: 200 };
-// 				animateValue(transition.current, 0, outConfig)(onTransionFinished);
-// 			});
-// 		}, [animationConfig, id, onRegisterTransitionOut]);
-
-// 		const handleDismiss = React.useCallback(() => globalThis.portalRef?.unmount(id), [id]);
-// 		if (!(globalThis.portalRef && componentName in globalThis.portalRef.components)) {
-// 			throw new Error(`trying to render unknown portal ${componentName}`);
-// 		}
-// 		const Component = globalThis.portalRef.components[componentName];
-// 		return (
-// 			<PortalWrapper>
-// 				<Component
-// 					{...props}
-// 					dismissPortal={handleDismiss}
-// 					portalLayout={portalLayout}
-// 					transition={transition.current}
-// 				/>
-// 			</PortalWrapper>
-// 		);
-// 	}
-// );
+const PortalContent = React.memo(
+	({
+		id,
+		componentName,
+		portalLayout,
+		...props
+	}: {
+		id: string;
+		componentName: string;
+		portalLayout?: any;
+	}) => {
+		const handleDismiss = React.useCallback(() => globalThis.portalRef?.unmount(id), [id]);
+		if (!(globalThis.portalRef && componentName in globalThis.portalRef.components)) {
+			throw new Error(`trying to render unknown portal ${componentName}`);
+		}
+		const Component = globalThis.portalRef.components[componentName];
+		return (
+			<PortalWrapper>
+				<Component {...props} dismissPortal={handleDismiss} portalLayout={portalLayout} />
+			</PortalWrapper>
+		);
+	}
+);
 
 const Wrapper = styled.View`
 	flex: 1;
@@ -102,16 +81,15 @@ const PortalProvider = ({ children }: { children: React.Element }): React.Elemen
 	return (
 		<Wrapper onLayout={handleMeasureWrapper}>
 			{children}
-			{/* {contents.map(({ id, componentName, props }) => (
+			{contents.map(({ id, componentName, props }) => (
 				<PortalContent
-					onRegisterTransitionOut={handleRegisterTransition}
 					key={id}
 					id={id}
 					componentName={componentName}
 					portalLayout={portalLayout}
 					{...props}
 				/>
-			))} */}
+			))}
 		</Wrapper>
 	);
 };
@@ -120,7 +98,9 @@ PortalProvider.render = (id: string, Component: React.ComponentType, props: any)
 	const componentName = Component.name;
 	if (!componentName) throw new Error('Portal components need a name attribute');
 	if (!globalThis.portalRef) throw new Error('No PortalProvider present');
-	globalThis.portalRef.components[componentName];
+	if (!(componentName in globalThis.portalRef.components)) {
+		globalThis.portalRef.components[componentName] = Component;
+	}
 	globalThis.portalRef.render(id, componentName, props);
 };
 
