@@ -14,6 +14,10 @@ import CreateBetView from '../components/CreateBetView';
 import JoinBetView from '../components/JoinBetView';
 import PortalProvider2 from '../components/PortalProvider2';
 import { useArtist } from '../state/artist';
+import BetVisualizer from '../components/BetVisualizer';
+import DateSlider from '../components/DateSlider';
+import ListenersSlider from '../components/ListenersSlider';
+import { createBet } from '../state/bet';
 
 const Row = styled.View`
 	flex-direction: row;
@@ -49,14 +53,54 @@ const ContentWrapper = styled.View`
 	padding: ${(p) => p.theme.rem2px(p.pad)};
 `;
 
-const ModalComponent = ({ dismissPortal, type, ...props }) => (
-	<Wrapper>
-		<OpacityOverlay onPress={dismissPortal} />
-		<ContentWrapper pad="1.5rem">
-			{type === 'create' ? <CreateBetView {...props} /> : <JoinBetView {...props} />}
-		</ContentWrapper>
-	</Wrapper>
-);
+const ModalComponent = ({ dismissPortal, artist, onHandleSubmit, ...props }) => {
+	const [state, setState] = React.useState({
+		monthlyListeners: null,
+		dateTime: null,
+	});
+
+	const handleChange = React.useCallback((obj) => {
+		setState((before) => ({ ...before, ...obj }));
+	}, []);
+
+	const [loading, setLoading] = React.useState(false);
+
+	const handleSubmit = React.useCallback(() => {
+		setLoading(true);
+		onHandleSubmit && onHandleSubmit(state);
+	}, [onHandleSubmit, state]);
+
+	return (
+		<Wrapper>
+			<OpacityOverlay onPress={dismissPortal} />
+			<ContentWrapper pad="1.5rem">
+				{artist.monthlyListeners === state.monthlyListeners ? null : (
+					<BetVisualizer
+						barLeftValue={artist.monthlyListeners}
+						barRightValue={state.monthlyListeners}
+						dateLeft="now"
+						dateRight={state.dateTime}
+						type={state.monthlyListeners > artist.monthlyListeners ? 'HIGHER' : 'LOWER'}
+						hideQuote={true}
+					/>
+				)}
+
+				<ListenersSlider onChange={handleChange} monthlyListeners={artist?.monthlyListeners} />
+				<DateSlider initialValue={0} onChange={handleChange} />
+
+				<Row>
+					<Button onPress={dismissPortal} label="Cancel" backgroundColor="background0" />
+					<Button
+						loading={loading}
+						onPress={handleSubmit}
+						label="Submit"
+						disabled={state.monthlyListeners === artist?.monthlyListeners || !state.dateTime}
+					/>
+				</Row>
+			</ContentWrapper>
+		</Wrapper>
+	);
+};
 
 const ArtistDetailView = ({
 	route,
@@ -66,26 +110,56 @@ const ArtistDetailView = ({
 	const navigation = useNavigation();
 	const { artistId } = route.params;
 	const artist = useArtist(artistId);
+	const [betId, setBetId] = React.useState(null);
 
 	const handleJoinBet = React.useCallback(
-		(betId) => {
+		(id) => {
 			PortalProvider2.render('joinBetModal', ModalComponent, {
 				artist,
 				onCreatedBet: handleJoinBet,
 				type: 'join',
-				betId,
+				betId: id,
 			});
 		},
 		[artist]
 	);
 
-	const handleCreateNewBet = React.useCallback(() => {
+	const handleError = React.useCallback((errorCode) => {
+		// renderPortal({
+		// 	title: 'Error',
+		// 	description: expectedErrors[errorCode] || 'Unexpected Error',
+		// });
+		console.log('handleError, to be implemented');
+	}, []);
+
+	const handleSubmitBet = React.useCallback(
+		async ({ monthlyListeners, dateTime }) => {
+			const { success, id, error } = await createBet({
+				artistId: artist!.id,
+				artistName: artist!.name,
+				type: monthlyListeners > artist!.monthlyListeners ? 'HIGHER' : 'LOWER',
+				listeners: monthlyListeners,
+				endDate: dateTime,
+				spotifyUrl: artist!.spotifyUrl,
+			});
+			if (success) {
+				setBetId(id);
+				PortalProvider2.unmount('createBetModal');
+			} else {
+				handleError(error);
+			}
+		},
+		[artist, handleError]
+	);
+
+	const handleShowJoinBetModal = React.useCallback(() => {
 		PortalProvider2.render('createBetModal', ModalComponent, {
 			artist,
 			onCreatedBet: handleJoinBet,
 			type: 'create',
+			onHandleSubmit: handleSubmitBet,
 		});
-	}, [artist, handleJoinBet]);
+	}, [artist, handleJoinBet, handleSubmitBet]);
 
 	const handleOpenArtistBets = React.useCallback(() => {
 		navigation.navigate('ArtistBetsScreen', { artistId: artist?.id });
@@ -106,7 +180,7 @@ const ArtistDetailView = ({
 				{artist.monthlyListeners && artist.joinableBets?.length ? (
 					<Button onPress={handleOpenArtistBets} label="Open bets" />
 				) : null}
-				<Button onPress={handleCreateNewBet} label="Create new bet" />
+				<Button onPress={handleShowJoinBetModal} label="Create new bet" />
 			</Row>
 		</HeaderScrollView>
 	);
