@@ -3,21 +3,27 @@
 
 import React from 'react';
 import { RouteProp, useNavigation } from '@react-navigation/native';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
+import { Switch } from 'react-native';
 
 import HeaderScrollView from '../components/HeaderScrollView';
 import Button from '../components/Button';
 import ArtistStatsRow from '../components/ArtistStatsRow';
 import GradientTitleImage from '../components/GradientTitleImage';
 import Graph from '../components/Graph';
-import CreateBetView from '../components/CreateBetView';
-import JoinBetView from '../components/JoinBetView';
 import PortalProvider2 from '../components/PortalProvider2';
-import { useArtist } from '../state/artist';
 import BetVisualizer from '../components/BetVisualizer';
 import DateSlider from '../components/DateSlider';
 import ListenersSlider from '../components/ListenersSlider';
-import { createBet } from '../state/bet';
+import { Paragraph, Label } from '../components/Text';
+import Loading from '../components/Loading';
+import AmountSlider from '../components/AmountSlider';
+import Dialog from '../components/Dialog';
+
+import { useArtist } from '../state/artist';
+import { useUser } from '../state/user';
+import { useBet, createBet, joinBet } from '../state/bet';
+import delay from '../util/delay';
 
 const Row = styled.View`
 	flex-direction: row;
@@ -40,7 +46,6 @@ const OpacityOverlay = styled.TouchableOpacity`
 	position: absolute;
 	background-color: ${(p) => p.theme.colors.neutral1};
 	opacity: 0.5;
-	border: 5px solid yellow;
 	justify-content: center;
 	align-items: center;
 `;
@@ -53,7 +58,7 @@ const ContentWrapper = styled.View`
 	padding: ${(p) => p.theme.rem2px(p.pad)};
 `;
 
-const ModalComponent = ({ dismissPortal, artist, onHandleSubmit, ...props }) => {
+const CreateBetModal = ({ dismissPortal, artist, onHandleSubmit, ...props }) => {
 	const [state, setState] = React.useState({
 		monthlyListeners: null,
 		dateTime: null,
@@ -102,6 +107,126 @@ const ModalComponent = ({ dismissPortal, artist, onHandleSubmit, ...props }) => 
 	);
 };
 
+const TextModal = ({ dismissPortal, text }) => {
+	return (
+		<Wrapper>
+			<OpacityOverlay onPress={dismissPortal} />
+			<ContentWrapper pad="1.5rem">
+				<Paragraph align="center">{text}</Paragraph>
+			</ContentWrapper>
+		</Wrapper>
+	);
+};
+
+const joinBetExpectedErrors = {
+	NETWORK_ERROR: 'Network error. You seem to be offline.',
+	BET_NOT_JOINABLE: 'You can no longer join this bet.',
+	NOT_ENOUGH_MONEY: "You don't have enough money.",
+	NO_SUPPORT_AND_CONTRADICTION_OF_SAME_BET: 'You cannot support and contradict the same bet.',
+};
+
+const JoinBetModal = ({ dismissPortal, betId, onHandleSubmit }) => {
+	const theme = useTheme();
+	const bet = useBet(betId);
+	const { currentUser } = useUser();
+
+	const [state, setState] = React.useState({
+		amount: null,
+		support: bet?.currentUserAmount ? bet?.currentUserSupports : true,
+	});
+
+	const [loading, setLoading] = React.useState(false);
+
+	const handleChange = React.useCallback((obj) => {
+		setState((before) => ({ ...before, ...obj }));
+	}, []);
+
+	const handleSubmit = React.useCallback(() => {
+		setLoading(true);
+		onHandleSubmit && onHandleSubmit(state);
+	}, [onHandleSubmit, state]);
+
+	const switchColors = React.useMemo(
+		() => ({
+			false: theme.colors.background1,
+			true: theme.colors.background1,
+		}),
+		[theme.colors.background1]
+	);
+
+	const handleError = React.useCallback((errorCode) => {
+		Dialog.render('erroModal', {
+			title: 'Error',
+			description: joinBetExpectedErrors[errorCode] || 'Unexpected Error',
+		});
+	}, []);
+
+	const handleSwitch = React.useCallback(() => {
+		// don't allow switching to support if user already contradicted the bet and vice versa
+		if (Number(bet?.currentUserAmount) > 0 && bet?.currentUserSupports !== !state.support) {
+			handleError('NO_SUPPORT_AND_CONTRADICTION_OF_SAME_BET');
+		} else {
+			setState((b) => ({ ...b, support: !b.support }));
+		}
+	}, [bet?.currentUserAmount, bet?.currentUserSupports, handleError, state.support]);
+
+	return (
+		<Wrapper>
+			<OpacityOverlay onPress={dismissPortal} />
+			<ContentWrapper pad="1.5rem">
+				{!bet ? (
+					<Loading />
+				) : (
+					<>
+						<BetVisualizer
+							{...bet}
+							barLeftValue={bet.artist?.monthlyListeners}
+							barRightValue={bet.listeners}
+							dateLeft="now"
+							dateRight={bet.endDate}
+							currentUserAmount={state.amount + Number(bet.currentUserAmount)}
+							currentUserSupports={state.support}
+							supportersAmount={
+								state.support ? bet.supportersAmount + state.amount : bet.supportersAmount
+							}
+							contradictorsAmount={
+								!state.support ? bet.contradictorsAmount + state.amount : bet.contradictorsAmount
+							}
+						/>
+						<AmountSlider
+							maxSliderVal={currentUser?.money}
+							onChange={handleChange}
+							money={currentUser?.money}
+						/>
+						<Wrapper>
+							<Switch
+								trackColor={switchColors}
+								value={state.support}
+								onValueChange={handleSwitch}
+							/>
+						</Wrapper>
+						<Wrapper>
+							{state.support ? (
+								<Label light>Support bet</Label>
+							) : (
+								<Label light>Contradict bet</Label>
+							)}
+						</Wrapper>
+						<Wrapper>
+							<Button
+								loading={loading}
+								onPress={handleSubmit}
+								label="Sumbit"
+								disabled={state.amount === 0}
+							/>
+						</Wrapper>
+					</>
+				)}
+			</ContentWrapper>
+		</Wrapper>
+	);
+};
+
 const ArtistDetailView = ({
 	route,
 }: {
@@ -111,18 +236,11 @@ const ArtistDetailView = ({
 	const { artistId } = route.params;
 	const artist = useArtist(artistId);
 	const [betId, setBetId] = React.useState(null);
+	const [showCreateBetModal, setShowCreateBetModal] = React.useState(false);
+	const [showSuccessModal, setShowSuccessModal] = React.useState(false);
+	const [showJoinBetModal, setShowJoinBetModal] = React.useState(false);
 
-	const handleJoinBet = React.useCallback(
-		(id) => {
-			PortalProvider2.render('joinBetModal', ModalComponent, {
-				artist,
-				onCreatedBet: handleJoinBet,
-				type: 'join',
-				betId: id,
-			});
-		},
-		[artist]
-	);
+	console.log({ showCreateBetModal, showSuccessModal });
 
 	const handleError = React.useCallback((errorCode) => {
 		// renderPortal({
@@ -144,7 +262,11 @@ const ArtistDetailView = ({
 			});
 			if (success) {
 				setBetId(id);
-				PortalProvider2.unmount('createBetModal');
+				setShowCreateBetModal(false);
+				setShowSuccessModal(true);
+				await delay(2000);
+				setShowSuccessModal(false);
+				setShowJoinBetModal(true);
 			} else {
 				handleError(error);
 			}
@@ -152,16 +274,37 @@ const ArtistDetailView = ({
 		[artist, handleError]
 	);
 
-	const handleShowJoinBetModal = React.useCallback(() => {
-		PortalProvider2.render('createBetModal', ModalComponent, {
-			artist,
-			onCreatedBet: handleJoinBet,
-			type: 'create',
-			onHandleSubmit: handleSubmitBet,
-		});
-	}, [artist, handleJoinBet, handleSubmitBet]);
+	React.useEffect(() => {
+		if (showCreateBetModal) {
+			PortalProvider2.render('createBetModal', CreateBetModal, {
+				artist,
+				onHandleSubmit: handleSubmitBet,
+			});
+		} else {
+			PortalProvider2.unmount('createBetModal');
+		}
+	}, [artist, handleSubmitBet, showCreateBetModal]);
 
-	const handleOpenArtistBets = React.useCallback(() => {
+	React.useEffect(() => {
+		if (showSuccessModal) {
+			PortalProvider2.render('successModal', TextModal, { text: 'Successfully created bet...' });
+		} else {
+			PortalProvider2.unmount('successModal');
+		}
+	}, [artist, handleSubmitBet, showSuccessModal]);
+
+	React.useEffect(() => {
+		if (showJoinBetModal) {
+			PortalProvider2.render('joinBetModal', JoinBetModal, {
+				artist,
+				betId,
+			});
+		} else {
+			PortalProvider2.unmount('joinBetModal');
+		}
+	}, [artist, betId, handleSubmitBet, showJoinBetModal, showSuccessModal]);
+
+	const handleShowExistentBets = React.useCallback(() => {
 		navigation.navigate('ArtistBetsScreen', { artistId: artist?.id });
 	}, [artist, navigation]);
 
@@ -178,9 +321,9 @@ const ArtistDetailView = ({
 			<Graph data={artist.monthlyListenersHistory} />
 			<Row>
 				{artist.monthlyListeners && artist.joinableBets?.length ? (
-					<Button onPress={handleOpenArtistBets} label="Open bets" />
+					<Button onPress={handleShowExistentBets} label="Open bets" />
 				) : null}
-				<Button onPress={handleShowJoinBetModal} label="Create new bet" />
+				<Button onPress={() => setShowCreateBetModal(true)} label="Create new bet" />
 			</Row>
 		</HeaderScrollView>
 	);
