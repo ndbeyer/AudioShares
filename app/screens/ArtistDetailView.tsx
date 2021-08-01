@@ -58,22 +58,48 @@ const ContentWrapper = styled.View`
 	padding: ${(p) => p.theme.rem2px(p.pad)};
 `;
 
-const CreateBetModal = ({ dismissPortal, artist, onHandleSubmit, ...props }) => {
+const createBetExpectedErrors = {
+	NETWORK_ERROR: 'Network error. You seem to be offline.',
+	INVALID_BET_TIMING: 'Invalid date.',
+	STAT_SERVER_ERROR: 'Unexpected Error.',
+};
+
+const CreateBetModal = ({ dismissPortal, artist, onHandleSuccess }) => {
 	const [state, setState] = React.useState({
 		monthlyListeners: null,
 		dateTime: null,
 	});
+
+	const handleError = React.useCallback((errorCode) => {
+		Dialog.render('erroModal', {
+			title: 'Error',
+			description: createBetExpectedErrors[errorCode] || 'Unexpected Error',
+		});
+	}, []);
+
+	const handleSubmit = React.useCallback(async () => {
+		setLoading(true);
+		const { success, id, error } = await createBet({
+			artistId: artist!.id,
+			artistName: artist!.name,
+			type: state.monthlyListeners > artist!.monthlyListeners ? 'HIGHER' : 'LOWER',
+			listeners: state.monthlyListeners,
+			endDate: state.dateTime,
+			spotifyUrl: artist!.spotifyUrl,
+		});
+		setLoading(false);
+		if (success) {
+			onHandleSuccess(id);
+		} else {
+			handleError(error);
+		}
+	}, [artist, handleError, onHandleSuccess, state.dateTime, state.monthlyListeners]);
 
 	const handleChange = React.useCallback((obj) => {
 		setState((before) => ({ ...before, ...obj }));
 	}, []);
 
 	const [loading, setLoading] = React.useState(false);
-
-	const handleSubmit = React.useCallback(() => {
-		setLoading(true);
-		onHandleSubmit && onHandleSubmit(state);
-	}, [onHandleSubmit, state]);
 
 	return (
 		<Wrapper>
@@ -125,7 +151,7 @@ const joinBetExpectedErrors = {
 	NO_SUPPORT_AND_CONTRADICTION_OF_SAME_BET: 'You cannot support and contradict the same bet.',
 };
 
-const JoinBetModal = ({ dismissPortal, betId, onHandleSubmit }) => {
+const JoinBetModal = ({ dismissPortal, betId, onHandleSuccess }) => {
 	const theme = useTheme();
 	const bet = useBet(betId);
 	const { currentUser } = useUser();
@@ -137,14 +163,31 @@ const JoinBetModal = ({ dismissPortal, betId, onHandleSubmit }) => {
 
 	const [loading, setLoading] = React.useState(false);
 
+	const handleError = React.useCallback((errorCode) => {
+		Dialog.render('erroModal', {
+			title: 'Error',
+			description: joinBetExpectedErrors[errorCode] || 'Unexpected Error',
+		});
+	}, []);
+
 	const handleChange = React.useCallback((obj) => {
 		setState((before) => ({ ...before, ...obj }));
 	}, []);
 
-	const handleSubmit = React.useCallback(() => {
+	const handleSubmit = React.useCallback(async () => {
 		setLoading(true);
-		onHandleSubmit && onHandleSubmit(state);
-	}, [onHandleSubmit, state]);
+		const { success, error } = await joinBet({
+			betId: bet?.id,
+			support: state.support,
+			amount: state.amount,
+		});
+		setLoading(false);
+		if (success) {
+			onHandleSuccess();
+		} else {
+			handleError(error);
+		}
+	}, [bet?.id, handleError, onHandleSuccess, state.amount, state.support]);
 
 	const switchColors = React.useMemo(
 		() => ({
@@ -153,13 +196,6 @@ const JoinBetModal = ({ dismissPortal, betId, onHandleSubmit }) => {
 		}),
 		[theme.colors.background1]
 	);
-
-	const handleError = React.useCallback((errorCode) => {
-		Dialog.render('erroModal', {
-			title: 'Error',
-			description: joinBetExpectedErrors[errorCode] || 'Unexpected Error',
-		});
-	}, []);
 
 	const handleSwitch = React.useCallback(() => {
 		// don't allow switching to support if user already contradicted the bet and vice versa
@@ -198,28 +234,28 @@ const JoinBetModal = ({ dismissPortal, betId, onHandleSubmit }) => {
 							onChange={handleChange}
 							money={currentUser?.money}
 						/>
-						<Wrapper>
+						<Row>
 							<Switch
 								trackColor={switchColors}
 								value={state.support}
 								onValueChange={handleSwitch}
 							/>
-						</Wrapper>
-						<Wrapper>
+						</Row>
+						<Row>
 							{state.support ? (
 								<Label light>Support bet</Label>
 							) : (
 								<Label light>Contradict bet</Label>
 							)}
-						</Wrapper>
-						<Wrapper>
+						</Row>
+						<Row>
 							<Button
 								loading={loading}
 								onPress={handleSubmit}
 								label="Sumbit"
 								disabled={state.amount === 0}
 							/>
-						</Wrapper>
+						</Row>
 					</>
 				)}
 			</ContentWrapper>
@@ -240,50 +276,32 @@ const ArtistDetailView = ({
 	const [showSuccessModal, setShowSuccessModal] = React.useState(false);
 	const [showJoinBetModal, setShowJoinBetModal] = React.useState(false);
 
-	console.log({ showCreateBetModal, showSuccessModal });
+	console.log({ betId, showCreateBetModal, showSuccessModal, showJoinBetModal });
 
-	const handleError = React.useCallback((errorCode) => {
-		// renderPortal({
-		// 	title: 'Error',
-		// 	description: expectedErrors[errorCode] || 'Unexpected Error',
-		// });
-		console.log('handleError, to be implemented');
+	const handleCreateBetSuccess = React.useCallback(async (betId) => {
+		setBetId(betId);
+		setShowCreateBetModal(false);
+		setShowSuccessModal(true);
+		await delay(2000);
+		setShowSuccessModal(false);
+		setShowJoinBetModal(true);
 	}, []);
 
-	const handleSubmitBet = React.useCallback(
-		async ({ monthlyListeners, dateTime }) => {
-			const { success, id, error } = await createBet({
-				artistId: artist!.id,
-				artistName: artist!.name,
-				type: monthlyListeners > artist!.monthlyListeners ? 'HIGHER' : 'LOWER',
-				listeners: monthlyListeners,
-				endDate: dateTime,
-				spotifyUrl: artist!.spotifyUrl,
-			});
-			if (success) {
-				setBetId(id);
-				setShowCreateBetModal(false);
-				setShowSuccessModal(true);
-				await delay(2000);
-				setShowSuccessModal(false);
-				setShowJoinBetModal(true);
-			} else {
-				handleError(error);
-			}
-		},
-		[artist, handleError]
-	);
+	const handleJoinBetSuccess = React.useCallback(async (betId) => {
+		setShowJoinBetModal(false);
+		// TODO: show success Modal
+	}, []);
 
 	React.useEffect(() => {
 		if (showCreateBetModal) {
 			PortalProvider2.render('createBetModal', CreateBetModal, {
 				artist,
-				onHandleSubmit: handleSubmitBet,
+				onHandleSuccess: handleCreateBetSuccess,
 			});
 		} else {
 			PortalProvider2.unmount('createBetModal');
 		}
-	}, [artist, handleSubmitBet, showCreateBetModal]);
+	}, [artist, handleCreateBetSuccess, showCreateBetModal]);
 
 	React.useEffect(() => {
 		if (showSuccessModal) {
@@ -291,18 +309,19 @@ const ArtistDetailView = ({
 		} else {
 			PortalProvider2.unmount('successModal');
 		}
-	}, [artist, handleSubmitBet, showSuccessModal]);
+	}, [artist, showSuccessModal]);
 
 	React.useEffect(() => {
 		if (showJoinBetModal) {
 			PortalProvider2.render('joinBetModal', JoinBetModal, {
 				artist,
 				betId,
+				onHandleSuccess: handleJoinBetSuccess,
 			});
 		} else {
 			PortalProvider2.unmount('joinBetModal');
 		}
-	}, [artist, betId, handleSubmitBet, showJoinBetModal, showSuccessModal]);
+	}, [artist, betId, handleJoinBetSuccess, showJoinBetModal]);
 
 	const handleShowExistentBets = React.useCallback(() => {
 		navigation.navigate('ArtistBetsScreen', { artistId: artist?.id });
