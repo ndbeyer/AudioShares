@@ -17,7 +17,7 @@ export default Text;
 
 
 export const Label = styled.Text`
-  color: ${(p) => p.theme.colors[p.color] || p.theme.colors.neutral1};
+  color: ${(p) => p.color === 'transparent' ? 'transparent' : p.theme.colors[p.color] || p.theme.colors.neutral1};
   margin: ${(p) => p.theme.rem2px(p.margin) || "0"}; 
   font: ${(p) =>
     ({
@@ -51,7 +51,7 @@ export const Paragraph = styled.Text`
       m: p.bold ? p.theme.typo.paragraph2Bold : p.theme.typo.paragraph2,
       l: p.bold ? p.theme.typo.paragraph3Bold : p.theme.typo.paragraph3,
     }[p.size || "m"])};
-  color: ${(p) => p.theme.colors[p.color] || p.theme.colors.neutral0};
+  color: ${(p) => p.color === 'transparent' ? 'transparent' : p.theme.colors[p.color] || p.theme.colors.neutral0};
   margin: ${(p) => p.theme.rem2px(p.margin) || "0"}; 
   text-align: ${(p) => p.align || "left"};
   ${(p) => (p.width ? `width: ${p.theme.rem2px(p.width)}` : "")};
@@ -60,7 +60,7 @@ export const Paragraph = styled.Text`
 `;
 
 export const Heading = styled.Text`
-color: ${(p) => p.theme.colors[p.color] || p.theme.colors.neutral1};
+color: ${(p) => p.color === 'transparent' ? 'transparent' : p.theme.colors[p.color] || p.theme.colors.neutral1};
 margin: ${(p) => p.theme.rem2px(p.margin) || "0"}; 
   font: ${(p) =>
     ({
