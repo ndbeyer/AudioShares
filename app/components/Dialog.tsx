@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Label, Paragraph } from './Text';
 import Button from './Button';
+import PortalProvider2 from './PortalProvider2';
 
 const BackgroundWrapper = styled.View`
 	width: 100%;
@@ -47,56 +48,56 @@ export const usePortal = (): PortalContext => {
 
 const Dialog = ({
 	dismissPortal,
-	children,
 	content,
 }: {
 	dismissPortal: () => void;
-	children: React.Element;
 	content: { [key: string]: number | string };
 }): React.Element => {
 	return (
 		<>
 			<BackgroundWrapper>
 				<BackgroundOverlay onPress={dismissPortal} />
-				<ContentWrapper pad={children ? '1.5rem' : '2.5rem'}>
-					{children ? (
-						children
-					) : (
-						<>
-							{content?.title ? <Label size="xl">{content.title}</Label> : null}
-							{content?.description ? (
-								<Paragraph margin="2rem 0rem">{content.description}</Paragraph>
-							) : null}
+				<ContentWrapper pad="2.5rem">
+					{content?.title ? <Label size="xl">{content.title}</Label> : null}
+					{content?.description ? (
+						<Paragraph margin="2rem 0rem">{content.description}</Paragraph>
+					) : null}
 
-							<Row>
-								{content?.buttons?.map(({ label, onPress, disabled, loading }, index) => (
-									<Button
-										margin="0 0 0 1rem"
-										key={`DialogButton${index}`}
-										label={label}
-										onPress={onPress}
-										backgroundColor={
-											content.buttons.length > 1 && index === 0 ? 'background1' : 'background0'
-										}
-										disabled={disabled}
-										loading={loading}
-									/>
-								)) || (
-									<Button
-										margin="0 0 0 1rem"
-										// key={`DialogButton${index}`}
-										label="OK"
-										onPress={dismissPortal}
-										backgroundColor="background0"
-									/>
-								)}
-							</Row>
-						</>
-					)}
+					<Row>
+						{content?.buttons?.map(({ label, onPress, disabled, loading }, index) => (
+							<Button
+								margin="0 0 0 1rem"
+								key={`DialogButton${index}`}
+								label={label}
+								onPress={onPress}
+								backgroundColor={
+									content.buttons.length > 1 && index === 0 ? 'background1' : 'background0'
+								}
+								disabled={disabled}
+								loading={loading}
+							/>
+						)) || (
+							<Button
+								margin="0 0 0 1rem"
+								// key={`DialogButton${index}`}
+								label="OK"
+								onPress={dismissPortal}
+								backgroundColor="background0"
+							/>
+						)}
+					</Row>
 				</ContentWrapper>
 			</BackgroundWrapper>
 		</>
 	);
+};
+
+Dialog.render = (id, props) => {
+	PortalProvider2.render(id, Dialog, props);
+};
+
+Dialog.unmount = (id) => {
+	PortalProvider2.unmount(id);
 };
 
 export default Dialog;
