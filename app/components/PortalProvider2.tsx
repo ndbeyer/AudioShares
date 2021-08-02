@@ -41,9 +41,6 @@ const PortalProvider = ({ children }: { children: React.Element }): React.Elemen
 	const [contents, setContents] = React.useState<
 		{ id: string; componentName: string; props: unknown }[]
 	>([]);
-
-	console.log('contents', contents);
-
 	// register the global portal ref, using globalThis ensures fast refresh works
 	React.useLayoutEffect(() => {
 		globalThis.portalRef = {

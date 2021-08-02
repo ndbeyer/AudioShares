@@ -7,10 +7,10 @@ import styled from 'styled-components';
 import Button from '../components/Button';
 import Screen from '../components/Screen';
 import Loading from '../components/Loading';
+import Dialog from '../components/Dialog';
 import { Heading, Label, Paragraph } from '../components/Text';
 
 import { login } from '../state/auth';
-import { usePortal } from '../components/PortalProvider';
 
 const StyledScreen = styled(Screen)`
 	justify-content: center;
@@ -29,17 +29,12 @@ const LoginScreen = (): React.Element => {
 	const [clicked, setClicked] = React.useState(false);
 	const [loading, setLoading] = React.useState(false);
 
-	const { renderPortal } = usePortal();
-
-	const handleError = React.useCallback(
-		(errorCode) => {
-			renderPortal({
-				title: 'Error',
-				description: loginErrorDescriptions[errorCode] || 'Unexpected Server Error',
-			});
-		},
-		[renderPortal]
-	);
+	const handleError = React.useCallback((errorCode) => {
+		Dialog.render('errorDialog', {
+			title: 'Error',
+			description: loginErrorDescriptions[errorCode] || 'Unexpected Server Error',
+		});
+	}, []);
 
 	const handleLogin = React.useCallback(async () => {
 		setLoading(true);

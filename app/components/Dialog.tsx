@@ -34,45 +34,33 @@ const Row = styled.View`
 	margin-top: ${(p) => p.theme.rem2px('1rem')};
 `;
 
-const PortalContext = React.createContext();
-
-type PortalContext = {
-	renderPortal: () => void;
-	closePortal: () => void;
-};
-
-export const usePortal = (): PortalContext => {
-	const context = React.useContext(PortalContext);
-	return context;
-};
-
 const Dialog = ({
 	dismissPortal,
-	content,
+	title,
+	description,
+	buttons,
 }: {
 	dismissPortal: () => void;
-	content: { [key: string]: number | string };
+	title: string;
+	description: string;
+	buttons?: { label: string; onPress: () => void; disabled: boolean; loading: boolean }[];
 }): React.Element => {
 	return (
 		<>
 			<BackgroundWrapper>
 				<BackgroundOverlay onPress={dismissPortal} />
 				<ContentWrapper pad="2.5rem">
-					{content?.title ? <Label size="xl">{content.title}</Label> : null}
-					{content?.description ? (
-						<Paragraph margin="2rem 0rem">{content.description}</Paragraph>
-					) : null}
+					{title ? <Label size="xl">{title}</Label> : null}
+					{description ? <Paragraph margin="2rem 0rem">{description}</Paragraph> : null}
 
 					<Row>
-						{content?.buttons?.map(({ label, onPress, disabled, loading }, index) => (
+						{buttons?.map(({ label, onPress, disabled, loading }, index) => (
 							<Button
 								margin="0 0 0 1rem"
 								key={`DialogButton${index}`}
 								label={label}
 								onPress={onPress}
-								backgroundColor={
-									content.buttons.length > 1 && index === 0 ? 'background1' : 'background0'
-								}
+								backgroundColor={buttons.length > 1 && index === 0 ? 'background1' : 'background0'}
 								disabled={disabled}
 								loading={loading}
 							/>

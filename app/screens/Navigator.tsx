@@ -146,7 +146,6 @@ const LoggedInNavigator = () => {
 	React.useEffect(() => {
 		(async () => {
 			const { success, error } = await makeUserBetTransactions();
-			console.log('makeUserBetTransactions', { success, error }); // TODO: remove
 			setLoading(false);
 		})();
 	}, []);
@@ -156,7 +155,7 @@ const LoggedInNavigator = () => {
 
 const Navigator = (): React.Element => {
 	const appState = useAppState();
-	console.log('appState', appState);
+	console.log('APP_STATE: ', appState);
 
 	return (
 		// Navigator does not re-render too often, only if appState or theme changes
