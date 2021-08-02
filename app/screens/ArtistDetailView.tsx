@@ -271,57 +271,36 @@ const ArtistDetailView = ({
 	const navigation = useNavigation();
 	const { artistId } = route.params;
 	const artist = useArtist(artistId);
-	const [betId, setBetId] = React.useState(null);
-	const [showCreateBetModal, setShowCreateBetModal] = React.useState(false);
-	const [showSuccessModal, setShowSuccessModal] = React.useState(false);
-	const [showJoinBetModal, setShowJoinBetModal] = React.useState(false);
 
-	console.log({ betId, showCreateBetModal, showSuccessModal, showJoinBetModal });
-
-	const handleCreateBetSuccess = React.useCallback(async (betId) => {
-		setBetId(betId);
-		setShowCreateBetModal(false);
-		setShowSuccessModal(true);
+	const handleJoinBetSuccess = React.useCallback(async () => {
+		PortalProvider2.unmount('joinBetModal');
+		PortalProvider2.render('successModal', TextModal, { text: 'Successfully joined bet...' });
 		await delay(2000);
-		setShowSuccessModal(false);
-		setShowJoinBetModal(true);
-	}, []);
-
-	const handleJoinBetSuccess = React.useCallback(async (betId) => {
-		setShowJoinBetModal(false);
+		PortalProvider2.unmount('successModal');
 		// TODO: show success Modal
 	}, []);
 
-	React.useEffect(() => {
-		if (showCreateBetModal) {
-			PortalProvider2.render('createBetModal', CreateBetModal, {
-				artist,
-				onHandleSuccess: handleCreateBetSuccess,
-			});
-		} else {
+	const handleCreateBetSuccess = React.useCallback(
+		async (betId) => {
 			PortalProvider2.unmount('createBetModal');
-		}
-	}, [artist, handleCreateBetSuccess, showCreateBetModal]);
-
-	React.useEffect(() => {
-		if (showSuccessModal) {
 			PortalProvider2.render('successModal', TextModal, { text: 'Successfully created bet...' });
-		} else {
+			await delay(2000);
 			PortalProvider2.unmount('successModal');
-		}
-	}, [artist, showSuccessModal]);
-
-	React.useEffect(() => {
-		if (showJoinBetModal) {
 			PortalProvider2.render('joinBetModal', JoinBetModal, {
 				artist,
 				betId,
 				onHandleSuccess: handleJoinBetSuccess,
 			});
-		} else {
-			PortalProvider2.unmount('joinBetModal');
-		}
-	}, [artist, betId, handleJoinBetSuccess, showJoinBetModal]);
+		},
+		[artist, handleJoinBetSuccess]
+	);
+
+	const handleCreateBet = React.useCallback(() => {
+		PortalProvider2.render('createBetModal', CreateBetModal, {
+			artist,
+			onHandleSuccess: handleCreateBetSuccess,
+		});
+	}, [artist, handleCreateBetSuccess]);
 
 	const handleShowExistentBets = React.useCallback(() => {
 		navigation.navigate('ArtistBetsScreen', { artistId: artist?.id });
@@ -342,7 +321,7 @@ const ArtistDetailView = ({
 				{artist.monthlyListeners && artist.joinableBets?.length ? (
 					<Button onPress={handleShowExistentBets} label="Open bets" />
 				) : null}
-				<Button onPress={() => setShowCreateBetModal(true)} label="Create new bet" />
+				<Button onPress={handleCreateBet} label="Create new bet" />
 			</Row>
 		</HeaderScrollView>
 	);
