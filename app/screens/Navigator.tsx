@@ -12,7 +12,7 @@ import DashboardView from './DashboardView';
 import PlaylistsView from './PlaylistsView';
 import ArtistsView from './ArtistsView';
 import ArtistDetailView from './ArtistDetailView';
-import TransactionsScreen from './TransactionsScreen';
+import TransactionsView from './TransactionsView';
 import SettingsView from './SettingsView';
 import ArtistBetsScreen from './ArtistBetsScreen';
 
@@ -50,7 +50,7 @@ const stackNavigatorConfig = [
 	},
 	{
 		name: 'Transactions',
-		component: TransactionsScreen,
+		component: TransactionsView,
 		options: defaultOptions,
 	},
 	{

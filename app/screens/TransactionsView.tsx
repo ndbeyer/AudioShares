@@ -52,7 +52,7 @@ const HeaderWrapper = styled.View`
 	align-items: center;
 `;
 
-const TransactionsScreen = (): React.Element => {
+const TransactionsView = (): React.Element => {
 	const transactions = useTransactions();
 	const { currentUser } = useUser();
 	const theme = useTheme();
@@ -84,4 +84,4 @@ const TransactionsScreen = (): React.Element => {
 	);
 };
 
-export default TransactionsScreen;
+export default TransactionsView;
