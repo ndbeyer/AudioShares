@@ -3,6 +3,7 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useApolloClient } from '@apollo/react-hooks';
 
 import Loading from '../components/Loading';
 import TabBar from '../components/TabBar';
@@ -122,8 +123,10 @@ const TabNavigator = (): React.Element => {
 
 const useAppState = () => {
 	const { currentUser, loading } = useUser();
+	const client = useApolloClient();
 
 	const [triedRefresh, setTriedRefresh] = React.useState(false);
+	// const [triedCacheRestore, setTriedCacheRestore] = React.useState(false);
 
 	React.useEffect(() => {
 		(async () => {
@@ -135,7 +138,14 @@ const useAppState = () => {
 		})();
 	}, []);
 
-	if (loading || (!loading && !triedRefresh)) return 'LOADING';
+	// React.useEffect(() => {
+	// 	(async () => {
+	// 		await client.cache.persistor?.restoreElsePurge();
+	// 		setTriedCacheRestore(true);
+	// 	})();
+	// }, [client.cache.persistor]);
+
+	if (loading || !triedRefresh /*|| !triedCacheRestore */) return 'LOADING';
 	if (currentUser) return 'LOGGED_IN';
 	else return 'LOGGED_OUT';
 };
