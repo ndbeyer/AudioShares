@@ -76,7 +76,6 @@ const Header = ({
 			} else {
 				const obj = JSON.parse(navState);
 				obj[navigationState.routes[0].name] = navigationState.routes;
-				console.log('obj', obj);
 				await AsyncStorage.setItem('STACK_ROUTES', JSON.stringify(obj));
 			}
 		})();
