@@ -59,10 +59,19 @@ const MyTabBar = ({ state, navigation }): React.Element => {
 	const { bottom: bottomInsets } = useSafeAreaInsets();
 	const footerHeight = DEFAULT_FOOTER_HEIGHT * theme.rem + bottomInsets;
 
+	const initialStackNavigatorState = React.useRef();
+
 	React.useEffect(() => {
 		(async () => {
-			const initialTabRouteName = await AsyncStorage.getItem('TAB_ROUTE_NAME');
-			navigation.navigate(initialTabRouteName);
+			const initialStackNavigatorStateJSON = await AsyncStorage.getItem('STACK_ROUTES');
+			if (initialStackNavigatorStateJSON) {
+				initialStackNavigatorState.current = JSON.parse(initialStackNavigatorStateJSON);
+				const initialTabRouteName = await AsyncStorage.getItem('TAB_ROUTE_NAME');
+				navigation.navigate(initialTabRouteName);
+				initialStackNavigatorState.current[initialTabRouteName].forEach((route) =>
+					navigation.navigate(route.name, route.params)
+				);
+			}
 		})();
 	}, [navigation]);
 

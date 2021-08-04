@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Label } from './Text';
 import Icon from './Icon';
@@ -64,6 +65,22 @@ const Header = ({
 	const theme = useTheme();
 	const navigationState = useNavigationState((state) => state);
 	const route = useRoute();
+
+	React.useEffect(() => {
+		(async () => {
+			const navState = await AsyncStorage.getItem('STACK_ROUTES');
+			if (!navState) {
+				const obj = {};
+				obj[navigationState.routes[0].name] = navigationState.routes;
+				await AsyncStorage.setItem('STACK_ROUTES', JSON.stringify(obj));
+			} else {
+				const obj = JSON.parse(navState);
+				obj[navigationState.routes[0].name] = navigationState.routes;
+				console.log('obj', obj);
+				await AsyncStorage.setItem('STACK_ROUTES', JSON.stringify(obj));
+			}
+		})();
+	}, [navigationState.routes]);
 
 	const { top: topInsets } = useSafeAreaInsets();
 	const headerTotalHeight = DEFAULT_HEADER_HEIGHT * theme.rem + topInsets + headerContentHeight;
