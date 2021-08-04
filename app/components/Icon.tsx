@@ -1,9 +1,12 @@
 // @flow
 import * as React from 'react';
+import { TouchableOpacity, View } from 'react-native';
 import styled, { useTheme } from 'styled-components';
 import Svg, { Path } from 'react-native-svg';
 
-const Wrapper = styled.TouchableOpacity`
+const Wrapper = styled(({ notClickable, ...props }) =>
+	notClickable ? <View {...props} /> : <TouchableOpacity {...props} />
+)`
 	justify-content: center;
 	align-items: center;
 `;
@@ -17,6 +20,7 @@ const Icon = ({
 	name = 'back',
 	onPress,
 	style,
+	notClickable,
 }: {
 	id?: string;
 	color?: string;
@@ -26,6 +30,7 @@ const Icon = ({
 	name: string;
 	onPress?: (id?: string) => void;
 	style?: { [keys: string]: string | number };
+	notClickable?: boolean;
 }): React.Element => {
 	const theme = useTheme();
 	const pixelSize = theme.rem2px(size);
@@ -36,7 +41,7 @@ const Icon = ({
 	}, [id, onPress]);
 
 	return (
-		<Wrapper onPress={handlePress} style={style}>
+		<Wrapper notClickable={notClickable} onPress={handlePress} style={style}>
 			<Svg width={pixelSize} height={pixelSize} viewBox="0 0 24 24">
 				<Path
 					fill={outline ? 'none' : col}

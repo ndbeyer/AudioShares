@@ -5,6 +5,7 @@ import React from 'react';
 import 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import styled, { useTheme } from 'styled-components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Paragraph } from './Text';
 import Icon from './Icon';
@@ -31,7 +32,9 @@ const FooterContent = styled.View`
 	align-items: center;
 `;
 
-const TabIconWrapper = styled.TouchableOpacity`
+const TabIconWrapper = styled.TouchableOpacity.attrs((p) => ({
+	onPress: () => p.onPressAction(p.routeKey, p.routeName, p.isFocused),
+}))`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
@@ -51,12 +54,32 @@ export const useTabBarHeight = (
 	return footerHeight;
 };
 
-const MyTabBar = ({ state, descriptors, navigation }): React.Element => {
+const MyTabBar = ({ state, navigation }): React.Element => {
 	const theme = useTheme();
 	const { bottom: bottomInsets } = useSafeAreaInsets();
 	const footerHeight = DEFAULT_FOOTER_HEIGHT * theme.rem + bottomInsets;
 
-	const initialRouteRef = React.useRef(null);
+	React.useEffect(() => {
+		(async () => {
+			const initialTabRouteName = await AsyncStorage.getItem('TAB_ROUTE_NAME');
+			navigation.navigate(initialTabRouteName);
+		})();
+	}, [navigation]);
+
+	const handlePress = React.useCallback(
+		(routeKey, routeName, isFocused) => {
+			const event = navigation.emit({
+				type: 'tabPress',
+				target: routeKey,
+			});
+
+			if (!isFocused && !event.defaultPrevented) {
+				navigation.navigate(routeName);
+				AsyncStorage.setItem('TAB_ROUTE_NAME', routeName);
+			}
+		},
+		[navigation]
+	);
 
 	return (
 		<FooterWrapper height={footerHeight}>
@@ -66,28 +89,20 @@ const MyTabBar = ({ state, descriptors, navigation }): React.Element => {
 					const label = route.name;
 					const isFocused = state.index === index;
 
-					if (!initialRouteRef.current && isFocused) {
-						initialRouteRef.current = route.name;
-					}
-
-					const handlePress = () => {
-						const event = navigation.emit({
-							type: 'tabPress',
-							target: route.key,
-						});
-
-						if (!isFocused && !event.defaultPrevented) {
-							navigation.navigate(route.name);
-						}
-					};
-
 					return (
-						<TabIconWrapper onPress={handlePress} key={`${iconName}+${index}`}>
+						<TabIconWrapper
+							onPressAction={handlePress}
+							routeKey={route.key}
+							routeName={route.name}
+							isFocused={isFocused}
+							key={`${iconName}+${index}`}
+						>
 							<Icon
 								size="3.25rem"
+								id={route.key}
 								name={iconName}
 								color={isFocused ? 'neutral0' : 'neutral3'}
-								onPress={handlePress}
+								notClickable
 							/>
 							<Paragraph size="s" margin="0.5rem 0 0 0" color={isFocused ? 'neutral0' : 'neutral3'}>
 								{label}
