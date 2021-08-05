@@ -33,11 +33,17 @@ const FilterWrapper = styled.View`
 `;
 
 const FilterItem = styled(TouchableOpacity)`
-	background-color: ${(p) =>
-		p.selected ? p.theme.colors.background1 : p.theme.colors.background0};
 	flex: 1;
 	justify-content: center;
 	align-items: center;
+`;
+
+const Border = styled.View`
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: ${(p) => p.theme.rem2px('0.5rem')};
+	background-color: ${(p) => (p.selected ? p.theme.colors.accent0 : 'transparent')};
 `;
 
 const CardWrapper = styled.View`
@@ -97,6 +103,7 @@ const DashboardView = (): React.Element => {
 						onPress={() => setSelected(label)}
 					>
 						<Paragraph>{label[0] + label.substr(1).toLowerCase()}</Paragraph>
+						<Border selected={selected === label} />
 					</FilterItem>
 				))}
 			</FilterWrapper>
@@ -105,9 +112,12 @@ const DashboardView = (): React.Element => {
 
 	const shadowProps = React.useMemo(() => theme.elevation(1), [theme]);
 
-	const handlePressImage = React.useCallback((id) => {
-		navigation.navigate('Artist', { artistId: id });
-	}, []);
+	const handlePressImage = React.useCallback(
+		(id) => {
+			navigation.navigate('Artist', { artistId: id });
+		},
+		[navigation]
+	);
 
 	return !filteredBets ? (
 		<HeaderScrollView loading={true} />

@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Label } from './Text';
 import Icon from './Icon';
 import { useNavigation, useNavigationState, useRoute } from '@react-navigation/native';
+import BlurView from './BlurView';
 
 const DEFAULT_HEADER_HEIGHT = 6;
 
@@ -14,7 +15,6 @@ const HeaderWrapper = styled.View`
 	width: 100%;
 	position: absolute;
 	top: 0;
-	background-color: ${(p) => p.theme.colors.background0};
 `;
 
 const HeaderBaseContent = styled.View`
@@ -91,6 +91,7 @@ const Header = ({
 
 	return (
 		<HeaderWrapper height={headerTotalHeight}>
+			<BlurView />
 			<HeaderBaseContent marginTop={topInsets} height={headerBaseContentHeight}>
 				{navigationState.index > 0 ? (
 					<StyledIcon size="3.25rem" name="back" onPress={handleGoBack} />
