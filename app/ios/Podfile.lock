@@ -7,6 +7,8 @@ PODS:
   - boost-for-react-native (1.63.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
+  - EXBlur (9.0.3):
+    - UMCore
   - EXConstants (11.0.1):
     - ExpoModulesCore
     - UMCore
@@ -379,6 +381,7 @@ PODS:
 
 DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - EXBlur (from `../node_modules/expo-blur/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
@@ -467,6 +470,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  EXBlur:
+    :path: "../node_modules/expo-blur/ios"
   EXConstants:
     :path: "../node_modules/expo-constants/ios"
   EXFileSystem:
@@ -567,6 +572,7 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
+  EXBlur: 50d490040f3b14898ed8198d5125dc699189f4d9
   EXConstants: 3babb61f8f4bb7dffe85b8b7d6eaa31d903e4d7e
   EXFileSystem: 0a04aba8da751b9ac954065911bcf166503f8267
   EXImageLoader: d3531a3fe530b22925c19977cb53bb43e3821fe6

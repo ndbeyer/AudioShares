@@ -6,6 +6,7 @@ import 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import styled, { useTheme } from 'styled-components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BlurView } from 'expo-blur';
 
 import { Paragraph } from './Text';
 import Icon from './Icon';
@@ -18,12 +19,12 @@ const FooterWrapper = styled.View`
 	width: 100%;
 	position: absolute;
 	bottom: 0;
-	background-color: ${(p) => p.theme.colors.background0};
+	background-color: transparent;
 `;
 
 const FooterContent = styled.View`
-	background-color: transparent;
 	max-width: 100%;
+	height: 100%;
 	margin: ${(p) => p.theme.rem2px('0rem 2rem')};
 	height: ${(p) => p.height}px;
 	border-radius: ${(p) => p.height}px;
@@ -38,6 +39,22 @@ const TabIconWrapper = styled.TouchableOpacity.attrs((p) => ({
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+`;
+
+const StyledBlurView = styled(BlurView).attrs((p) => ({
+	intensity: p.theme.darkMode ? 50 : 100,
+}))`
+	position: absolute;
+	width: 100%;
+	height: 100%;
+`;
+
+const Opaciter = styled.View`
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: ${(p) => (p.theme.darkMode ? 'black' : p.theme.colors.background0)};
+	opacity: ${(p) => (p.theme.darkMode ? '0.9' : '0.5')};
 `;
 
 export const useTabBarHeight = (
@@ -92,6 +109,8 @@ const MyTabBar = ({ state, navigation }): React.Element => {
 
 	return (
 		<FooterWrapper height={footerHeight}>
+			<Opaciter />
+			<StyledBlurView />
 			<FooterContent marginBottom={bottomInsets} height={footerHeight - bottomInsets}>
 				{state.routes.map((route, index) => {
 					const iconName = tabNavigatorConfig[index].icon;
