@@ -203,14 +203,47 @@ const Row = styled.View`
 	align-items: center;
 `;
 
-const XAxis = ({ dateLeft, dateRight }) => {
+const XAxis = ({
+	dateLeft,
+	dateRight,
+	dateText,
+	dateLeft2,
+	dateRight2,
+	dateText2,
+}: {
+	dateLeft: 'now' | string;
+	dateRight: string;
+	dateText?: string;
+	dateLeft2?: 'now' | string;
+	dateRight2?: string;
+	dateText2?: string;
+}) => {
+	const [toggled, setToggled] = React.useState(false);
+
+	React.useEffect(() => {
+		if (dateLeft2 && dateRight2) {
+			const interval = setInterval(() => {
+				setToggled((before) => !before);
+			}, 3000);
+			return () => clearInterval(interval);
+		}
+	}, [dateLeft2, dateRight2]);
+
 	return (
 		<>
 			<Line mar="0rem" />
 			{dateLeft === 'now' && dateRight ? (
-				<Paragraph margin="0rem 0 0.5rem" size="s" color="neutral1">
-					{formatDistanceToNow(new Date(dateRight))}
-				</Paragraph>
+				!toggled ? (
+					<Paragraph margin="0rem 0 0.5rem" size="s" color="neutral1">
+						{dateText ? dateText + ' ' : null}
+						{formatDistanceToNow(new Date(dateRight))}
+					</Paragraph>
+				) : (
+					<Paragraph margin="0rem 0 0.5rem" size="s" color="neutral1">
+						{dateText2 ? dateText2 + ' ' : null}
+						{formatDistanceToNow(new Date(dateRight2))}
+					</Paragraph>
+				)
 			) : dateLeft && dateRight ? (
 				<Row>
 					<Paragraph margin="0.5rem" size="s" color="neutral1">
@@ -222,6 +255,7 @@ const XAxis = ({ dateLeft, dateRight }) => {
 				</Row>
 			) : !dateLeft && dateRight ? (
 				<Paragraph margin="0.5rem" size="s" color="neutral1">
+					{dateText ? dateText + ' ' : null}
 					{format(new Date(dateRight), 'yyyy-MM-dd')}
 				</Paragraph>
 			) : null}
@@ -234,6 +268,10 @@ const BetVisualizer = ({
 	barRightValue,
 	dateLeft,
 	dateRight,
+	dateText,
+	dateLeft2,
+	dateRight2,
+	dateText2,
 	type,
 	supportersAmount,
 	contradictorsAmount,
@@ -248,6 +286,10 @@ const BetVisualizer = ({
 	barRightValue: number;
 	dateLeft: 'now' | string;
 	dateRight: string;
+	dateText?: string;
+	dateLeft2?: 'now' | string;
+	dateRight2?: string;
+	dateText2?: string;
 	type: 'HIGHER' | 'LOWER';
 	supportersAmount?: number;
 	contradictorsAmount?: number;
@@ -303,7 +345,14 @@ const BetVisualizer = ({
 						/>
 					)}
 				</BarSection>
-				<XAxis dateLeft={dateLeft} dateRight={dateRight} />
+				<XAxis
+					dateLeft={dateLeft}
+					dateRight={dateRight}
+					dateText={dateText}
+					dateLeft2={dateLeft2}
+					dateRight2={dateRight2}
+					dateText2={dateText2}
+				/>
 			</BarContent>
 		</Wrapper>
 	);

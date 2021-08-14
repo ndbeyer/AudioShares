@@ -147,6 +147,9 @@ const DashboardView = (): React.Element => {
 												barRightValue: bet.listeners,
 												dateLeft: 'now',
 												dateRight: bet.endDate,
+												dateLeft2: 'now',
+												dateRight2: bet.startDate,
+												dateText2: 'joinable for',
 										  }
 										: selected === 'RUNNING'
 										? {
